@@ -3,7 +3,7 @@ public class Nicola {
 
     }
 
-    public static double winningPrize(int amount, int ruote) {
+    public static double winningPrize(int amount, int ruote, int playedNumbers, int colum) {
         double[][] prizes = {
                 {11.23},
                 {5.62, 250.00},
@@ -19,7 +19,7 @@ public class Nicola {
 
         double winning;
 
-        winning = prizes[4][4] * amount / ruote;
+        winning = prizes[playedNumbers][colum] * amount / ruote;
 
         return winning;
     }
