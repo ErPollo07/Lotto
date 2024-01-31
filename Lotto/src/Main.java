@@ -32,6 +32,8 @@ public class Main {
 
         int[] playerNumbers = new int[10];
 
+        int[][] arrays = new int[5][];
+
         double amount;
 
         // Take amount
