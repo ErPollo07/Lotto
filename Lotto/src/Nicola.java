@@ -36,9 +36,6 @@ public class Nicola {
 
         playerBetTypes = takePlayerBetypes();
 
-        //todo ask the user to choose a wheel
-
-
         double price = calculationWinningPrice(playerNumbers, wheels[0], playerBetTypes, amount, numberOfWheels, counterOfPlayedNumbers);
         System.out.println("Price: " + price);
     }
@@ -51,22 +48,10 @@ public class Nicola {
 
         betFromWheel = returnBetFromWheel(playerNumbers, wheel);
 
-        switch (betFromWheel) {
-            case 1:
-                price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, playerBetTypes[0]);
-                break;
-            case 2:
-                price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, playerBetTypes[1]);
-                break;
-            case 3:
-                price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, playerBetTypes[2]);
-                break;
-            case 4:
-                price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, playerBetTypes[3]);
-                break;
-            case 5:
-                price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, playerBetTypes[4]);
-                break;
+        for (int i = 1; i < playerBetTypes.length; i++) {
+            if (betFromWheel == i && playerBetTypes[i - 1] != 0) {
+                price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, playerBetTypes[i - 1]);
+            }
         }
 
         return price;
