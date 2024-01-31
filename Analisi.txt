@@ -1,0 +1,29 @@
+
+ESTRAZIONE LOTTO:
+
+ANALISI FUNZIONALE: 
+    
+     ANALISI DEI REQUISITI FUNZIONALI: 
+   
+1)  Inizializzazione delle Variabili:
+
+Il programma dichiara diverse variabili per gestire i numeri dei giocatori, i tipi di scommessa, le ruote, l'importo scommesso, il    numero di ruote, ecc.
+
+
+Input Utente:
+
+L'utente inserisce l'importo che vuole scommettere e il numero di ruote su cui desidera giocare.
+Generazione delle Ruote:
+
+Vengono generate le combinazioni casuali di numeri per le ruote.
+Selezione Numeri del Giocatore:
+
+L'utente inserisce 10 numeri distinti. Il programma gestisce anche il controllo per evitare duplicati.
+Calcolo del Numero di Numeri Giocati:
+
+Viene calcolato il numero effettivo di numeri giocati dal giocatore, escludendo gli zeri nella sequenza.
+     
+  
+
+    
+ 
