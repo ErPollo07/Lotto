@@ -3,24 +3,53 @@ import java.util.Scanner;
 
 public class Nicola {
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
         int[] playerNumbers;
-        int[] wheel;
-        
-        wheel = extractedWheel();
+        int[] wheelNumbers;
+        int[] playerBetTypes;
+        int[][] wheels = new int[10][5];
+
+        int nWheels;
+
+        System.out.println("inserisci su quante ruote vuoi giocare: ");
+        nWheels = scanner.nextInt();
+
+        for (int i = 0; i < nWheels; i++) wheels[i] = extractedWheel();
+
+        wheelNumbers = extractedWheel();
         
         playerNumbers = playerNumbers();
+
+        playerBetTypes = takePlayerBetypes();
+
+
     }
 
 
-    private static double calculationWinningPrice() {
+    private static double calculationWinningPrice(int[] playerNumbers, int[][] wheels, int[] playerBetTypes) {
 
 
         return 0;
     }
 
+    private static int returnBetFromWheel(int[] playerNumbers, int[] wheelNumbers) {
+        int betTypeOfWheel = 0;
+
+        // For every number in playerNumbers check if in the array of the wheel
+        // there is another which is equal.
+        for (int playerNumber : playerNumbers) {
+            for (int wheelNumber : wheelNumbers) {
+                if (playerNumber == wheelNumber) betTypeOfWheel++; // update the bet counter
+            }
+        }
+
+        return betTypeOfWheel;
+    }
+
     private static int[] playerNumbers() {
         Scanner scanner = new Scanner(System.in);
-        int[] numbers = new int[5];
+        int[] numbers = new int[10];
         boolean[] n = new boolean[90];
 
         for (int i = 0; i < numbers.length; i++) {
@@ -72,7 +101,7 @@ public class Nicola {
         return  casuale.nextInt(minValue,maxValue+1);
     }
 
-    private static int[] retrivePlayerBetypes() {
+    private static int[] takePlayerBetypes() {
         Scanner scanner = new Scanner(System.in);
         int[] betTypes = new int[5];
         int userBet = 1;
