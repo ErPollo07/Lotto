@@ -5,10 +5,9 @@ ANALISI FUNZIONALE:
     
      ANALISI DEI REQUISITI FUNZIONALI: 
    
-1)  Inizializzazione delle Variabili:
+    1) Inizializzazione delle Variabili:
 
-Il programma dichiara diverse variabili per gestire i numeri dei giocatori, i tipi di scommessa, le ruote, l'importo scommesso, il    numero di ruote, ecc.
-
+Il programma dichiara diverse variabili per gestire i numeri dei giocatori, i tipi di scommessa, le ruote, l'importo scommesso, il       numero di ruote, ecc.
 
 Input Utente:
 
@@ -22,7 +21,19 @@ L'utente inserisce 10 numeri distinti. Il programma gestisce anche il controllo 
 Calcolo del Numero di Numeri Giocati:
 
 Viene calcolato il numero effettivo di numeri giocati dal giocatore, escludendo gli zeri nella sequenza.
-     
+
+Selezione dei Tipi di Scommessa:
+
+L'utente seleziona i tipi di scommessa inserendo i numeri corrispondenti.
+Calcolo del Premio Potenziale:
+
+Viene calcolato il premio potenziale in base ai numeri del giocatore, alla ruota estratta, ai tipi di scommessa e all'importo scommesso.
+Generazione di Ruote Casuali:
+
+Le ruote sono generate casualmente, evitando duplicati.
+Calcolo del Premio Vincente:
+
+Il premio vincente viene calcolato in base alle regole definite nel metodo winningPrize.     
   
 
     
