@@ -6,38 +6,77 @@ public class Nicola {
         Scanner scanner = new Scanner(System.in);
 
         int[] playerNumbers;
-        int[] wheelNumbers;
         int[] playerBetTypes;
         int[][] wheels = new int[10][5];
 
-        int nWheels;
+        int numberOfWheels;
+        double amount;
 
+        // Insert amount
+        System.out.println("Inserisci l'importo: ");
+        amount = scanner.nextInt();
+
+        // Insert the of wheels
         System.out.println("inserisci su quante ruote vuoi giocare: ");
-        nWheels = scanner.nextInt();
+        numberOfWheels = scanner.nextInt();
+        // Generate the wheel numbers
+        for (int i = 0; i < numberOfWheels; i++) wheels[i] = extractedWheel();
 
-        for (int i = 0; i < nWheels; i++) wheels[i] = extractedWheel();
+        // take the player numbers
+        playerNumbers = takePlayerNumbers();
 
-        wheelNumbers = extractedWheel();
-        
-        playerNumbers = playerNumbers();
+        /* calculate the number of numbers who player played */
+        int counterOfPlayedNumbers = 0;
+
+        for (int i:playerNumbers) {
+            if (i != 0) counterOfPlayedNumbers++;
+            else break; // If the number is 0 the array is finished, so interrupt the cycle
+        }
+        /* END CALCULATION */
 
         playerBetTypes = takePlayerBetypes();
 
+        //todo ask the user to choose a wheel
 
+
+        double price = calculationWinningPrice(playerNumbers, wheels[0], playerBetTypes, amount, numberOfWheels, counterOfPlayedNumbers);
+        System.out.println("Price: " + price);
     }
 
 
-    private static double calculationWinningPrice(int[] playerNumbers, int[][] wheels, int[] playerBetTypes) {
+    private static double calculationWinningPrice(int[] playerNumbers, int[] wheel, int[] playerBetTypes,
+                                                  double amount, int numberOfWheels, int counterOfPlayedNumbers) {
+        int betFromWheel;
+        double price = 0;
 
+        betFromWheel = returnBetFromWheel(playerNumbers, wheel);
 
-        return 0;
+        switch (betFromWheel) {
+            case 1:
+                price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, playerBetTypes[0]);
+                break;
+            case 2:
+                price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, playerBetTypes[1]);
+                break;
+            case 3:
+                price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, playerBetTypes[2]);
+                break;
+            case 4:
+                price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, playerBetTypes[3]);
+                break;
+            case 5:
+                price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, playerBetTypes[4]);
+                break;
+        }
+
+        return price;
     }
 
     private static int returnBetFromWheel(int[] playerNumbers, int[] wheelNumbers) {
         int betTypeOfWheel = 0;
 
         // For every number in playerNumbers check if in the array of the wheel
-        // there is another which is equal.
+        // there is another that is equal.
         for (int playerNumber : playerNumbers) {
             for (int wheelNumber : wheelNumbers) {
                 if (playerNumber == wheelNumber) betTypeOfWheel++; // update the bet counter
@@ -47,40 +86,46 @@ public class Nicola {
         return betTypeOfWheel;
     }
 
-    private static int[] playerNumbers() {
+    private static int[] takePlayerNumbers() {
         Scanner scanner = new Scanner(System.in);
         int[] numbers = new int[10];
         boolean[] n = new boolean[90];
 
+        int number;
+
         for (int i = 0; i < numbers.length; i++) {
             System.out.println("inserisci un numero: ");
-            numbers[i] = scanner.nextInt();
+            number = scanner.nextInt();
 
-            // if in the array of boolean there is a true it's indicate that there is already a number
-            while (n[numbers[i] - 1]) {
-                // Ask to reinsert the number
-                System.out.println("Numero gia inserito. Iserisci un altro numero: ");
-                numbers[i] = scanner.nextInt();
+            if (number > 0) {
+                // if in the array of boolean there is a true, it's indicating that there is already a number
+                while (n[number - 1]) {
+                    // Ask to reinsert the number
+                    System.out.println("Numero gia inserito. Iserisci un altro numero: ");
+                    number = scanner.nextInt();
+                }
+
+                // Set the correct pos in the array to true to indicate that there is the number
+                n[number - 1] = true;
+
+                numbers[i] = number;
             }
-
-            // Set the correct pos in the array to true to indicate that there is the number
-            n[numbers[i] - 1] = true;
         }
 
         return numbers;
     }
 
     public static int[] extractedWheel() {
-        int[] numeri = new int[5];
-        int minValue = 1, maxValue = 90;
+        int[] numbers = new int[5];
+        int minValue = 1, maxValue = 20;
 
-        for (int i = 0; i < numeri.length; i++) {
-            numeri[i] = valoreRandom(minValue, maxValue); // Assign random value to numeri[i]
+        for (int i = 0; i < numbers.length; i++) {
+            numbers[i] = valoreRandom(minValue, maxValue); // Assign random value to numbers[i]
 
-            if (i > 0) valueChecker(numeri, i, minValue, maxValue); // check if the value isn't repeating
+            if (i > 0) valueChecker(numbers, i, minValue, maxValue); // check if the value isn't repeating
         }
 
-        return numeri; // return array
+        return numbers; // return array
     }
 
     // Check if the value is available
@@ -123,7 +168,7 @@ public class Nicola {
         return betTypes;
     }
 
-    public static double winningPrize(int amount, int wheels, int playedNumbers, int betType) {
+    public static double winningPrize(double amount, int numberOfWheels, int counterOfPlayedNumbers, int betType) {
         double[][] prizes = {
                 {11.23},
                 {5.62, 250.00},
@@ -139,7 +184,7 @@ public class Nicola {
 
         double winning;
 
-        winning = prizes[playedNumbers][betType] * amount / wheels;
+        winning = prizes[counterOfPlayedNumbers - 1][betType - 1] * amount / numberOfWheels;
 
         return winning;
     }
