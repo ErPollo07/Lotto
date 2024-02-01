@@ -5,20 +5,40 @@ public class Nicola {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        int[] playerNumbers;
-        int[] playerBetTypes;
-        int[][] wheels = new int[10][5];
+        int[] playerNumbers; // Number of the player
+        int[] playerBetTypes; // The bets of the player (singolo, ambo, terna, quaterna, cinquina)
+        int[][] wheels = new int[10][5]; // The 2d array for store all the wheels
 
-        int numberOfWheels;
-        double amount;
+        int numberOfWheels; // How many wheels the player chooses to player on
+        int counterOfPlayedNumbers = 0; // The number of the numbers the player played
+        double amount; // How much money the player has bet
+        double price = 0; // How much money the player wins
 
-        // Insert amount
+        // Ask the player to insert the amount of money he wants to bet
         System.out.println("Inserisci l'importo: ");
         amount = scanner.nextInt();
 
-        // Insert the of wheels
+        /*
+        quante ruote
+        - 1
+            - elenco ruote
+        - 10
+
+        if (numberOfWheels == 1)
+            returnArray = {numberOfWheels, wheel};
+            returnArray[0] = numberOfWheels;
+            returnArray[1] = wheel;
+        if (numberOfWheels == 10)
+            returnArray = {numberOfWheels, 0};
+
+        return returnArray;
+        */
+
+
+        // Ask the player how many wheels he what to bet on
         System.out.println("inserisci su quante ruote vuoi giocare: ");
         numberOfWheels = scanner.nextInt();
+
         // Generate the wheel numbers
         for (int i = 0; i < numberOfWheels; i++) wheels[i] = extractedWheel();
 
@@ -26,17 +46,19 @@ public class Nicola {
         playerNumbers = takePlayerNumbers();
 
         /* calculate the number of numbers who player played */
-        int counterOfPlayedNumbers = 0;
-
         for (int i:playerNumbers) {
             if (i != 0) counterOfPlayedNumbers++;
-            else break; // If the number is 0 the array is finished, so interrupt the cycle
+            else break; // If the number is 0, the array is finished, so interrupt the cycle
         }
         /* END CALCULATION */
 
+        // Take the bets of the player
         playerBetTypes = takePlayerBetypes();
 
-        double price = calculationWinningPrice(playerNumbers, wheels[0], playerBetTypes, amount, numberOfWheels, counterOfPlayedNumbers);
+        for (int i = 0; i < numberOfWheels; i++) {
+            price += calculationWinningPrice(playerNumbers, wheels[i], playerBetTypes, amount, numberOfWheels, counterOfPlayedNumbers);
+        }
+
         System.out.println("Price: " + price);
     }
 
@@ -48,7 +70,9 @@ public class Nicola {
 
         betFromWheel = returnBetFromWheel(playerNumbers, wheel);
 
+        // For every type of bet that the player bet on the cycle continue
         for (int i = 1; i < playerBetTypes.length; i++) {
+            // If the player bet in a specific bet type, so the number in the array is different form 0
             if (betFromWheel == i && playerBetTypes[i - 1] != 0) {
                 price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, playerBetTypes[i - 1]);
             }
@@ -188,5 +212,21 @@ public class Nicola {
             input *= inputMultiplier;
 
         return input;
+    }
+
+    private static void ClrScr() {
+        try {
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        } catch (Exception e ) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void Wait(int milliSecond) {
+        try {
+            Thread.sleep(milliSecond);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
