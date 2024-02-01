@@ -129,7 +129,7 @@ public class Nicola {
         int minValue = 1, maxValue = 20;
 
         for (int i = 0; i < numbers.length; i++) {
-            numbers[i] = valoreRandom(minValue, maxValue); // Assign random value to numbers[i]
+            numbers[i] = randomValue(minValue, maxValue); // Assign random value to numbers[i]
 
             if (i > 0) valueChecker(numbers, i, minValue, maxValue); // check if the value isn't repeating
         }
@@ -142,17 +142,17 @@ public class Nicola {
         for (int k = 0; k < i; k++) {
             // If the value is already in the array, reassign it and recheck all array
             if (array[i] == array[k]) {
-                array[i] = valoreRandom(minValue, maxValue); // Assign another random value to array[i]
+                array[i] = randomValue(minValue, maxValue); // Assign another random value to array[i]
                 k = -1; // Restart the check
             }
         }
     }
 
-    private static int valoreRandom(int minValue, int maxValue)
+    private static int randomValue(int minValue, int maxValue)
     {
-        Random casuale = new Random();
+        Random random = new Random();
 
-        return  casuale.nextInt(minValue,maxValue+1);
+        return  random.nextInt(minValue,maxValue+1);
     }
 
     private static int[] takePlayerBetTypes(int playedNumbers) {
