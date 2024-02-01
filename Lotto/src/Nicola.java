@@ -53,7 +53,7 @@ public class Nicola {
         /* END CALCULATION */
 
         // Take the bets of the player
-        playerBetTypes = takePlayerBetypes();
+        playerBetTypes = takePlayerBetTypes(counterOfPlayedNumbers);
 
         for (int i = 0; i < numberOfWheels; i++) {
             price += calculationWinningPrice(playerNumbers, wheels[i], playerBetTypes, amount, numberOfWheels, counterOfPlayedNumbers);
@@ -155,7 +155,7 @@ public class Nicola {
         return  casuale.nextInt(minValue,maxValue+1);
     }
 
-    private static int[] takePlayerBetypes() {
+    private static int[] takePlayerBetTypes(int playedNumbers) {
         Scanner scanner = new Scanner(System.in);
         int[] betTypes = new int[5];
         int userBet = 1;
@@ -163,21 +163,32 @@ public class Nicola {
 
         for (int i = 0; i < betTypes.length && userBet != 0; i++) {
             do {
-                System.out.println("Inserisci il " + (i+1) + " numero: ");
+                System.out.println("Inserisci scelta (si puó inserire piú scelte inserendo uno spazio fra le scelte o premedo invio): ");
                 userBet = scanner.nextInt();
 
-                if (userBet < 0 || userBet > 5) System.out.println("Numero non valido");
-            } while (userBet < 0 || userBet > 5);
+                // if the player inserts a number, which is bigger than the numbers of numbers that he plays
+                // Tell him that the number he can't afford the bet type
+                if (userBet > playedNumbers)
+                    System.out.println("La quantitá dei numeri che hai inserito é troppo piccola per porter scegliere questa opzione.");
+                // else if the player inserts a correct number check if it's available in the list of bet
+                // if it's not available, tell him that isn't a correct number
+                else if (userBet < 0 || userBet > 5)
+                    System.out.println("Numero non valido");
+            } while ((userBet  > playedNumbers) || (userBet < 0 || userBet > 5));
 
             // If the userBet is different from 0
             if (userBet != 0)
-                betTypes[userBet - 1] = userBet; // Insert in the correct place the number
+                betTypes[userBet - 1] = userBet; // Insert the number in the correct place
         }
 
         return betTypes;
     }
 
     public static double winningPrize(double amount, int numberOfWheels, int counterOfPlayedNumbers, int betType) {
+
+        // 2d array for prizes if the player inserts 1 euro
+        // The raw represent the played numbers of the player
+        // The column represents the bet types
         double[][] prizes = {
                 {11.23},
                 {5.62, 250.00},
@@ -193,6 +204,7 @@ public class Nicola {
 
         double winning;
 
+        // Calculate the winning
         winning = prizes[counterOfPlayedNumbers - 1][betType - 1] * amount / numberOfWheels;
 
         return winning;
@@ -214,7 +226,35 @@ public class Nicola {
         return input;
     }
 
-    private static void ClrScr() {
+    private static int printMenu(String[] option) {
+        Scanner scanner = new Scanner(System.in);
+
+        int choiceMenu;
+
+        do {
+            clrScr();
+
+            System.out.println("=============");
+            System.out.println(option[0]);
+            System.out.println("=============");
+
+            for (int i = 1; i < option.length; i++) {
+                System.out.println(option[i]);
+            }
+
+            System.out.println("\nInserisci la scelta: ");
+            choiceMenu = scanner.nextInt();
+
+            if (choiceMenu < 1 || choiceMenu > option.length - 1) {
+                System.out.println("\nScelta errata");
+                wait(1000);
+            }
+        } while (choiceMenu < 1 || choiceMenu > option.length - 1);
+
+        return choiceMenu;
+    }
+
+    private static void clrScr() {
         try {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         } catch (Exception e ) {
@@ -222,7 +262,7 @@ public class Nicola {
         }
     }
 
-    private static void Wait(int milliSecond) {
+    private static void wait(int milliSecond) {
         try {
             Thread.sleep(milliSecond);
         } catch (InterruptedException e) {
