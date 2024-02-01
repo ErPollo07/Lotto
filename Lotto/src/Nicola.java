@@ -5,20 +5,40 @@ public class Nicola {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        int[] playerNumbers;
-        int[] playerBetTypes;
-        int[][] wheels = new int[10][5];
+        int[] playerNumbers; // Number of the player
+        int[] playerBetTypes; // The bets of the player (singolo, ambo, terna, quaterna, cinquina)
+        int[][] wheels = new int[10][5]; // The 2d array for store all the wheels
 
-        int numberOfWheels;
-        double amount;
+        int numberOfWheels; // How many wheels the player chooses to player on
+        int counterOfPlayedNumbers = 0; // The number of the numbers the player played
+        double amount; // How much money the player has bet
+        double price = 0; // How much money the player wins
 
-        // Insert amount
+        // Ask the player to insert the amount of money he wants to bet
         System.out.println("Inserisci l'importo: ");
         amount = scanner.nextInt();
 
-        // Insert the of wheels
+        /*
+        quante ruote
+        - 1
+            - elenco ruote
+        - 10
+
+        if (numberOfWheels == 1)
+            returnArray = {numberOfWheels, wheel};
+            returnArray[0] = numberOfWheels;
+            returnArray[1] = wheel;
+        if (numberOfWheels == 10)
+            returnArray = {numberOfWheels, 0};
+
+        return returnArray;
+        */
+
+
+        // Ask the player how many wheels he what to bet on
         System.out.println("inserisci su quante ruote vuoi giocare: ");
         numberOfWheels = scanner.nextInt();
+
         // Generate the wheel numbers
         for (int i = 0; i < numberOfWheels; i++) wheels[i] = extractedWheel();
 
@@ -26,17 +46,19 @@ public class Nicola {
         playerNumbers = takePlayerNumbers();
 
         /* calculate the number of numbers who player played */
-        int counterOfPlayedNumbers = 0;
-
         for (int i:playerNumbers) {
             if (i != 0) counterOfPlayedNumbers++;
-            else break; // If the number is 0 the array is finished, so interrupt the cycle
+            else break; // If the number is 0, the array is finished, so interrupt the cycle
         }
         /* END CALCULATION */
 
-        playerBetTypes = takePlayerBetypes();
+        // Take the bets of the player
+        playerBetTypes = takePlayerBetTypes(counterOfPlayedNumbers);
 
-        double price = calculationWinningPrice(playerNumbers, wheels[0], playerBetTypes, amount, numberOfWheels, counterOfPlayedNumbers);
+        for (int i = 0; i < numberOfWheels; i++) {
+            price += calculationWinningPrice(playerNumbers, wheels[i], playerBetTypes, amount, numberOfWheels, counterOfPlayedNumbers);
+        }
+
         System.out.println("Price: " + price);
     }
 
@@ -48,7 +70,9 @@ public class Nicola {
 
         betFromWheel = returnBetFromWheel(playerNumbers, wheel);
 
+        // For every type of bet that the player bet on the cycle continue
         for (int i = 1; i < playerBetTypes.length; i++) {
+            // If the player bet in a specific bet type, so the number in the array is different form 0
             if (betFromWheel == i && playerBetTypes[i - 1] != 0) {
                 price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, playerBetTypes[i - 1]);
             }
@@ -131,7 +155,7 @@ public class Nicola {
         return  casuale.nextInt(minValue,maxValue+1);
     }
 
-    private static int[] takePlayerBetypes() {
+    private static int[] takePlayerBetTypes(int playedNumbers) {
         Scanner scanner = new Scanner(System.in);
         int[] betTypes = new int[5];
         int userBet = 1;
@@ -139,21 +163,32 @@ public class Nicola {
 
         for (int i = 0; i < betTypes.length && userBet != 0; i++) {
             do {
-                System.out.println("Inserisci il " + (i+1) + " numero: ");
+                System.out.println("Inserisci scelta (si puó inserire piú scelte inserendo uno spazio fra le scelte o premedo invio): ");
                 userBet = scanner.nextInt();
 
-                if (userBet < 0 || userBet > 5) System.out.println("Numero non valido");
-            } while (userBet < 0 || userBet > 5);
+                // if the player inserts a number, which is bigger than the numbers of numbers that he plays
+                // Tell him that the number he can't afford the bet type
+                if (userBet > playedNumbers)
+                    System.out.println("La quantitá dei numeri che hai inserito é troppo piccola per porter scegliere questa opzione.");
+                // else if the player inserts a correct number check if it's available in the list of bet
+                // if it's not available, tell him that isn't a correct number
+                else if (userBet < 0 || userBet > 5)
+                    System.out.println("Numero non valido");
+            } while ((userBet  > playedNumbers) || (userBet < 0 || userBet > 5));
 
             // If the userBet is different from 0
             if (userBet != 0)
-                betTypes[userBet - 1] = userBet; // Insert in the correct place the number
+                betTypes[userBet - 1] = userBet; // Insert the number in the correct place
         }
 
         return betTypes;
     }
 
     public static double winningPrize(double amount, int numberOfWheels, int counterOfPlayedNumbers, int betType) {
+
+        // 2d array for prizes if the player inserts 1 euro
+        // The raw represent the played numbers of the player
+        // The column represents the bet types
         double[][] prizes = {
                 {11.23},
                 {5.62, 250.00},
@@ -169,6 +204,7 @@ public class Nicola {
 
         double winning;
 
+        // Calculate the winning
         winning = prizes[counterOfPlayedNumbers - 1][betType - 1] * amount / numberOfWheels;
 
         return winning;
@@ -188,5 +224,49 @@ public class Nicola {
             input *= inputMultiplier;
 
         return input;
+    }
+
+    private static int printMenu(String[] option) {
+        Scanner scanner = new Scanner(System.in);
+
+        int choiceMenu;
+
+        do {
+            clrScr();
+
+            System.out.println("=============");
+            System.out.println(option[0]);
+            System.out.println("=============");
+
+            for (int i = 1; i < option.length; i++) {
+                System.out.println(option[i]);
+            }
+
+            System.out.println("\nInserisci la scelta: ");
+            choiceMenu = scanner.nextInt();
+
+            if (choiceMenu < 1 || choiceMenu > option.length - 1) {
+                System.out.println("\nScelta errata");
+                wait(1000);
+            }
+        } while (choiceMenu < 1 || choiceMenu > option.length - 1);
+
+        return choiceMenu;
+    }
+
+    private static void clrScr() {
+        try {
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        } catch (Exception e ) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void wait(int milliSecond) {
+        try {
+            Thread.sleep(milliSecond);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
