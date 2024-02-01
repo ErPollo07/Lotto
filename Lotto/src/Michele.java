@@ -7,7 +7,7 @@ public class Michele {
         BetSelectionmenu(keyboard);
     }
     private static int MenuWheels(Scanner keyboard) {       //Menu per la scelta delle ruote      //ClrScr
-        String[] lottoWord = {"        ..:---::.         .:----:..         .:----:.         ..:----:.         .::---:..          \n" +
+        String[] lottoWord = {"         ..:---::.         .:----:..         .:----:.         ..:----:.         .::---:..          \n" +
                 "        :-=+++++++=-:.   .:=++++++++=-.    .-=++++++++=-.    :-=++++++++=:.   .:==+++++++=-:        \n" +
                 "      .=++-:.   .:-=+=:.:=+=-..   .:=++-..-++=:..  ..:=+=-..=++=:.   .:-=+=: :=+=-:.   .:-++=.      \n" +
                 "     :++-. =*=     .-++=++-. :-::--. .=+==+=:.-++++++-.:=+=++=..=++++++:.-++=++-.         .=++:     \n" +
@@ -23,9 +23,20 @@ public class Michele {
         int wheel = 0;
         int numberOfWheels=0;
 
-        String[] menuWheelsChoice = {"[1] - Scelta libera di una ruota\n" + "[2] - Tutte e 10 le ruote\n"};
-        String[] wheelsCity = {"[1] - BARI\n" + "[2] - CAGLIARI\n" + "[3] - FIRENZE\n" + "[4] - GENOVA\n" + "[5] - MILANO\n" +
-                "[6] - NAPOLI\n" + "[7] - PALERMO\n" + "[8] - ROMA\n" + "[9] - TORINO\n" + "[10] - VENEZIA"};
+        String[] menuWheelsChoice = {
+                "[1] - Scelta libera di una ruota\n" +
+                "[2] - Tutte e 10 le ruote\n"};
+        String[] wheelsCity = {
+                "[1] - BARI\n",
+                "[2] - CAGLIARI\n",
+                "[3] - FIRENZE\n",
+                "[4] - GENOVA\n",
+                "[5] - MILANO\n",
+                "[6] - NAPOLI\n",
+                "[7] - PALERMO\n",
+                "[8] - ROMA\n",
+                "[9] - TORINO\n",
+                "[10] - VENEZIA"};
 
         do {
             System.out.println("-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-");
@@ -89,7 +100,13 @@ public class Michele {
                 "     .-++-..:::::..-++=:=+=-..::.. .:=++-:=+=:. .--. .:=+=:-++-:. .-: ..-=+=:=+=-..     .:-++-.     \n" +
                 "       :=+++=====+++=:. .:=++======+++-.  .-+++======++=-.  :=+++======++=:. .:=++======+++=:       \n" +
                 "         .:--====-:..     .:--====--:.      .:--====--:.      .:--====--..     .:--====--:.         \n"};
-        String[] betselection= {"[1] - SINGOLO\n" + "[2] - AMBO\n" + "[3] - TERNA\n" + "[4] - QUATERNA\n" + "[5] - CINQUINA\n"};
+        String[] betselection= {
+                "[1] - SINGOLO",
+                "[2] - AMBO",
+                "[3] - TERNA",
+                "[4] - QUATERNA",
+                "[5] - CINQUINA"
+        };
         //ClrScr
         do {
         System.out.println("-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-");

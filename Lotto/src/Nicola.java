@@ -5,6 +5,35 @@ public class Nicola {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        String[] wheelMenu = {
+                "Su quale ruota vuoi puntare?",
+                "[1] - BARI",
+                "[2] - CAGLIARI",
+                "[3] - FIRENZE",
+                "[4] - GENOVA",
+                "[5] - MILANO",
+                "[6] - NAPOLI",
+                "[7] - PALERMO",
+                "[8] - ROMA",
+                "[9] - TORINO",
+                "[10] - VENEZIA"
+        };
+
+        String[] numberOfWheelMenu = {
+                "Su quante ruote vuoi puntare?",
+                "[1] - Scelta libera di una ruota",
+                "[2] - Tutte e 10 le ruote"
+        };
+
+        String[] betMenu = {
+                "Quale puntate vuoi scegliere?",
+                "[1] - SINGOLO",
+                "[2] - AMBO",
+                "[3] - TERNA",
+                "[4] - QUATERNA",
+                "[5] - CINQUINA"
+        };
+
         int[] playerNumbers; // Number of the player
         int[] playerBetTypes; // The bets of the player (singolo, ambo, terna, quaterna, cinquina)
         int[][] wheels = new int[10][5]; // The 2d array for store all the wheels
@@ -18,29 +47,13 @@ public class Nicola {
         System.out.println("Inserisci l'importo: ");
         amount = scanner.nextInt();
 
-        /*
-        quante ruote
-        - 1
-            - elenco ruote
-        - 10
-
-        if (numberOfWheels == 1)
-            returnArray = {numberOfWheels, wheel};
-            returnArray[0] = numberOfWheels;
-            returnArray[1] = wheel;
-        if (numberOfWheels == 10)
-            returnArray = {numberOfWheels, 0};
-
-        return returnArray;
-        */
-
-
         // Ask the player how many wheels he what to bet on
         System.out.println("inserisci su quante ruote vuoi giocare: ");
         numberOfWheels = scanner.nextInt();
 
         // Generate the wheel numbers
-        for (int i = 0; i < numberOfWheels; i++) wheels[i] = extractedWheel();
+        for (int i = 0; i < numberOfWheels; i++)
+            wheels[i] = extractedWheel();
 
         // take the player numbers
         playerNumbers = takePlayerNumbers();
@@ -166,7 +179,7 @@ public class Nicola {
                 System.out.println("Inserisci scelta (si puó inserire piú scelte inserendo uno spazio fra le scelte o premedo invio): ");
                 userBet = scanner.nextInt();
 
-                // if the player inserts a number, which is bigger than the numbers of numbers that he plays
+                // if the player inserts a number, which is bigger than the numbers of numbers that he plays,
                 // Tell him that the number he can't afford the bet type
                 if (userBet > playedNumbers)
                     System.out.println("La quantitá dei numeri che hai inserito é troppo piccola per porter scegliere questa opzione.");
