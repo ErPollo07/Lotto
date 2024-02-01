@@ -26,7 +26,7 @@ public class Nicola {
                 "[2] - Tutte e 10 le ruote"
         };
 
-        String[] betMenu = {
+        String[] betTypeMenu = {
                 "Quale puntate vuoi scegliere?",
                 "[1] - SINGOLO",
                 "[2] - AMBO",
@@ -40,6 +40,7 @@ public class Nicola {
         int[][] wheels = new int[10][5]; // The 2d array for store all the wheels
 
         int numberOfWheels; // How many wheels the player chooses to player on
+        int whatWheel = 0; // number of the wheel that the player wants to play on
         int counterOfPlayedNumbers = 0; // The number of the numbers the player played
         double amount; // How much money the player has bet
         double price = 0; // How much money the player wins
@@ -49,13 +50,20 @@ public class Nicola {
         amount = scanner.nextInt();
 
         // Ask the player how many wheels he what to bet on
-        System.out.println("inserisci su quante ruote vuoi giocare: ");
-        numberOfWheels = scanner.nextInt();
+        numberOfWheels = takeNumberOfWheels(numberOfWheelMenu);
+
+        // if the player wants to play on one wheel, then I make him choose which wheel
+        if (numberOfWheels <= 1)
+            whatWheel = takeSpecificWheel(specificWheelsMenu);
 
         // Generate the wheel numbers
-        for (int i = 0; i < numberOfWheels; i++)
-            wheels[i] = extractedWheel();
-
+        if (whatWheel == 0) {
+            for (int i = 0; i < numberOfWheels; i++)
+                wheels[i] = extractedWheel();
+        }
+        else  {
+            wheels[whatWheel] = extractedWheel();
+        }
         // clrSrc
 
         // take the player numbers
@@ -69,10 +77,15 @@ public class Nicola {
         /* END CALCULATION */
 
         // Take the bets of the player
-        playerBetTypes = takePlayerBetTypes(counterOfPlayedNumbers);
+        playerBetTypes = takePlayerBetTypes(counterOfPlayedNumbers, betTypeMenu);
 
-        for (int i = 0; i < numberOfWheels; i++) {
-            price += calculationWinningPrice(playerNumbers, wheels[i], playerBetTypes, amount, numberOfWheels, counterOfPlayedNumbers);
+        if (whatWheel == 0) {
+            for (int i = 0; i < numberOfWheels; i++) {
+                price += calculationWinningPrice(playerNumbers, wheels[i], playerBetTypes, amount, numberOfWheels, counterOfPlayedNumbers);
+            }
+        }
+        else {
+            price += calculationWinningPrice(playerNumbers, wheels[whatWheel], playerBetTypes, amount, numberOfWheels, counterOfPlayedNumbers);
         }
 
         System.out.println("Price: " + price);
@@ -81,7 +94,7 @@ public class Nicola {
 
     private static double calculationWinningPrice(int[] playerNumbers, int[] wheel, int[] playerBetTypes,
                                                   double amount, int numberOfWheels, int counterOfPlayedNumbers) {
-        int betFromWheel;
+        int betFromWheel = 0;
         double price = 0;
 
         betFromWheel = returnBetFromWheel(playerNumbers, wheel);
@@ -122,15 +135,31 @@ public class Nicola {
         numberOfWheels = scanner.nextInt();
 
         // If the user types a wrong choice, tell him that it's wrong
-        if (numberOfWheels == 1 || numberOfWheels == 10)
+        if (numberOfWheels != 1 && numberOfWheels != 10)
             System.out.println("Devi scegire 1 ruota o 10");
-        } while (numberOfWheels != 1 || numberOfWheels != 10);
+        } while (numberOfWheels != 1 && numberOfWheels != 10);
 
         return numberOfWheels;
     }
 
     private static int takeSpecificWheel(String[] menuOption) {
+        Scanner scanner = new Scanner(System.in);
+        int specificWheel;
 
+        do {
+            printMenu(menuOption); // print the menu
+
+            System.out.println("Inserisci la tua scelta: ");
+            specificWheel = scanner.nextInt();
+
+            // If the user types a wrong choice, tell him that it's wrong
+            if (specificWheel < 1 || specificWheel > 10)
+                System.out.println("Devi scegire 1 ruota o 10");
+        } while (specificWheel < 1 || specificWheel > 10);
+
+
+
+        return specificWheel;
     }
 
     private static int[] takePlayerNumbers() {
@@ -140,7 +169,7 @@ public class Nicola {
 
         int number;
 
-        System.out.println("Inserisci i numeri su cui vuoi scommettere.\nSe non vuoi inserire altri numeri inserisci 0.\n");
+        System.out.println("Inserisci i numeri su cui vuoi scommettere.\nSe non vuoi inserire altri numeri inserisci 0.");
 
         for (int i = 0; i < numbers.length; i++) {
             // if the insert number is grader then 90, the program makes you enter the number again.
