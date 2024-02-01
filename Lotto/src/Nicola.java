@@ -1,3 +1,4 @@
+import javax.lang.model.util.SimpleAnnotationValueVisitor6;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -5,7 +6,7 @@ public class Nicola {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        String[] wheelMenu = {
+        String[] specificWheelsMenu = {
                 "Su quale ruota vuoi puntare?",
                 "[1] - BARI",
                 "[2] - CAGLIARI",
@@ -110,6 +111,28 @@ public class Nicola {
         return betTypeOfWheel;
     }
 
+    private static int takeNumberOfWheels(String[] menuOption) {
+        Scanner scanner = new Scanner(System.in);
+        int numberOfWheels;
+
+        do {
+        printMenu(menuOption); // print the menu
+
+        System.out.println("Inserisci la tua scelta: ");
+        numberOfWheels = scanner.nextInt();
+
+        // If the user types a wrong choice, tell him that it's wrong
+        if (numberOfWheels == 1 || numberOfWheels == 10)
+            System.out.println("Devi scegire 1 ruota o 10");
+        } while (numberOfWheels != 1 || numberOfWheels != 10);
+
+        return numberOfWheels;
+    }
+
+    private static int takeSpecificWheel(String[] menuOption) {
+
+    }
+
     private static int[] takePlayerNumbers() {
         Scanner scanner = new Scanner(System.in);
         int[] numbers = new int[10];
@@ -120,13 +143,14 @@ public class Nicola {
         System.out.println("Inserisci i numeri su cui vuoi scommettere.\nSe non vuoi inserire altri numeri inserisci 0.\n");
 
         for (int i = 0; i < numbers.length; i++) {
+            // if the insert number is grader then 90, the program makes you enter the number again.
             do {
                 System.out.print("\nInserisci un numero: ");
                 number = scanner.nextInt();
 
-                if (number > 91)
+                if (number > 90)
                     System.out.println("Devi inserire un numero tra 0 e 90");
-            } while (number > 91);
+            } while (number > 90);
 
             if (number > 0) {
                 // if in the array of boolean there is a true, it's indicating that there is already a number
@@ -178,15 +202,18 @@ public class Nicola {
         return  random.nextInt(minValue,maxValue+1);
     }
 
-    private static int[] takePlayerBetTypes(int playedNumbers) {
+    private static int[] takePlayerBetTypes(int playedNumbers, String[] menuOptions) {
         Scanner scanner = new Scanner(System.in);
         int[] betTypes = new int[5];
         int userBet = 1;
 
 
         for (int i = 0; i < betTypes.length && userBet != 0; i++) {
+
+            printMenu(menuOptions);
+
             do {
-                System.out.println("Inserisci scelta (si puó inserire piú scelte inserendo uno spazio fra le scelte o premedo invio): ");
+                System.out.println("\nInserisci scelta (si puó inserire piú scelte inserendo uno spazio fra le scelte o premedo invio): ");
                 userBet = scanner.nextInt();
 
                 // if the player inserts a number, which is bigger than the numbers of numbers that he plays,
@@ -249,32 +276,18 @@ public class Nicola {
         return input;
     }
 
-    private static int printMenu(String[] option) {
+    private static void printMenu(String[] option) {
         Scanner scanner = new Scanner(System.in);
 
-        int choiceMenu;
+        clrScr();
 
-        do {
-            clrScr();
+        System.out.println("=============");
+        System.out.println(option[0]);
+        System.out.println("=============");
 
-            System.out.println("=============");
-            System.out.println(option[0]);
-            System.out.println("=============");
-
-            for (int i = 1; i < option.length; i++) {
-                System.out.println(option[i]);
-            }
-
-            System.out.println("\nInserisci la scelta: ");
-            choiceMenu = scanner.nextInt();
-
-            if (choiceMenu < 1 || choiceMenu > option.length - 1) {
-                System.out.println("\nScelta errata");
-                wait(1000);
-            }
-        } while (choiceMenu < 1 || choiceMenu > option.length - 1);
-
-        return choiceMenu;
+        for (int i = 1; i < option.length; i++) {
+            System.out.println(option[i]);
+        }
     }
 
     private static void clrScr() {
