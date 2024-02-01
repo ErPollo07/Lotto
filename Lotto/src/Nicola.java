@@ -55,6 +55,8 @@ public class Nicola {
         for (int i = 0; i < numberOfWheels; i++)
             wheels[i] = extractedWheel();
 
+        // clrSrc
+
         // take the player numbers
         playerNumbers = takePlayerNumbers();
 
@@ -115,9 +117,16 @@ public class Nicola {
 
         int number;
 
+        System.out.println("Inserisci i numeri su cui vuoi scommettere.\nSe non vuoi inserire altri numeri inserisci 0.\n");
+
         for (int i = 0; i < numbers.length; i++) {
-            System.out.println("inserisci un numero: ");
-            number = scanner.nextInt();
+            do {
+                System.out.print("\nInserisci un numero: ");
+                number = scanner.nextInt();
+
+                if (number > 91)
+                    System.out.println("Devi inserire un numero tra 0 e 90");
+            } while (number > 91);
 
             if (number > 0) {
                 // if in the array of boolean there is a true, it's indicating that there is already a number
@@ -132,6 +141,7 @@ public class Nicola {
 
                 numbers[i] = number;
             }
+            else break; // If the player writes 0, the cycle stops
         }
 
         return numbers;
