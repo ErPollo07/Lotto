@@ -119,7 +119,7 @@ public class Nicola {
                     System.out.println("Devi inserire un numero tra 0 e 90");
             } while (number > 90);
 
-            if (number > 0) {
+            if (number >= 1) {
                 // if in the array of boolean there is a true, it's indicating that there is already a number
                 while (n[number - 1]) {
                     // Ask to reinsert the number
@@ -268,18 +268,15 @@ public class Nicola {
                 if (betFromWheel == i)
                     price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, playerBetTypes[i - 1]);
 
-
-                // if the betFromWheel is greater then 1
-                if (betFromWheel > 1) {
-                    // Cycle from betFromWheel to 1
-                    for (int j = betFromWheel; j > 1; j--) {
-                        if (playerBetTypes[j - 1] != 0) {
-                            // Calculate all the possibility to do a bet minor then the effective bet 
-                            howManyBet = retriveWinAmount(j, betFromWheel);
-                            price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, j) * howManyBet;
-                        }
+                // Cycle from betFromWheel to 1
+                for (int j = betFromWheel; j >= 1; j--) {
+                    if (playerBetTypes[j - 1] != 0) {
+                        // Calculate all the possibility to do a bet minor then the effective bet
+                        howManyBet = retriveWinAmount(j, betFromWheel);
+                        price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, j) * howManyBet;
                     }
                 }
+
             }
         }
 
