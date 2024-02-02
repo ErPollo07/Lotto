@@ -45,8 +45,7 @@ public class Nicola {
         double price = 0; // How much money the player wins
 
         // Ask the player to insert the amount of money he wants to bet
-        System.out.println("Inserisci l'importo: ");
-        amount = scanner.nextInt();
+        amount = takeAmount();
 
         // Ask the player how many wheels he what to bet on
         numberOfWheels = takeNumberOfWheels(numberOfWheelMenu);
@@ -82,23 +81,44 @@ public class Nicola {
 
         if (whatWheel == 0) {
             for (int i = 0; i < numberOfWheels; i++) {
+                System.out.println("Ecco le ruote: \n");
+                printWheel(wheels[i]);
                 price += calculationWinningPrice(playerNumbers, wheels[i], playerBetTypes, amount, numberOfWheels, counterOfPlayedNumbers);
             }
+
         }
         else {
+            System.out.println("Ecco la ruota che hai scelto: \n");
+            printWheel(wheels[whatWheel]);
             price += calculationWinningPrice(playerNumbers, wheels[whatWheel], playerBetTypes, amount, numberOfWheels, counterOfPlayedNumbers);
         }
 
-        System.out.println("Price: " + price);
+        System.out.println("Ecco i tuoi numeri: \n");
+        printWheel(playerNumbers);
+
+
+        System.out.println("Hai vinto: " + price + " euro");
     }
-
-
-
 
     /* --------------
      * PLAYER METHODS
      * --------------
      */
+
+    private static double takeAmount() {
+        Scanner scanner = new Scanner(System.in);
+        double amount;
+
+        do {
+            System.out.println("Inserisci importo: ");
+            amount = scanner.nextInt();
+
+            if (amount < 0 || amount > 200)
+                System.out.println("L'importo deve essere compreso tra 0 e 200.");
+        } while(amount < 0 || amount > 200);
+
+        return amount;
+    }
 
     private static int[] takePlayerNumbers() {
         Scanner scanner = new Scanner(System.in);
@@ -234,6 +254,11 @@ public class Nicola {
         } while (specificWheel < 1 || specificWheel > 10);
 
         return specificWheel;
+    }
+
+    private static void printWheel(int[] array) {
+        for (int i:array)
+            System.out.print(i + " ");
     }
 
     // Check if the value is available
