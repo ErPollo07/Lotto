@@ -133,7 +133,7 @@ public class aNicola {
         clrScr();
         printLottoWord();
 
-        System.out.println("Inserisci i numeri su cui si vuole scommettere.\nSe non vuoi inserire altri numeri inserisci 0.");
+        System.out.println("Inserisci i numeri su cui si vuole scommettere.\nSe non vuoi inserire altri numeri inserire 0.");
 
         for (int i = 0; i < numbers.length && continueToInsert; i++) {
 
@@ -144,11 +144,12 @@ public class aNicola {
                 System.out.print("\nInserisci un numero (inserire 0 per smettere di inserire): ");
                 number = scanner.nextInt();
 
+                /* ERROR MESSAGE */
                 // Check if the number is different from 0
                 if (number != 0) {
                     // Check if the number is in the correct interval
                     if (number < 0 || number > 90) {
-                        System.out.println("Devi inserire un numero tra 0 e 90");
+                        System.out.println("Devi inserire un numero tra 1 e 90");
                         correctInserction = false;
                     }
                     // check if the number is already insert
@@ -163,6 +164,7 @@ public class aNicola {
                         numbers[i] = number; // put the number in the right place
                     }
                 }
+                /* END ERROR MESSAGE */
                 else
                     continueToInsert = false;
             } while(!correctInserction);
@@ -174,42 +176,57 @@ public class aNicola {
     private static int[] takePlayerBetTypes(int playedNumbers, String[] menuOptions) {
         Scanner scanner = new Scanner(System.in);
         int[] betTypes = new int[5];
-        boolean[] betChecker = new boolean[6];
-        int userBet = 1;
+        boolean[] betChecker = new boolean[5];
+        int userBet;
+        boolean continueToInsert = true, correctInserction;
 
+        for (int i = 0; i < betTypes.length && continueToInsert; i++) {
 
-        for (int i = 0; i < betTypes.length && userBet != 0; i++) {
+            clrScr();
+            printLottoWord();
 
             printMenu(menuOptions);
 
             do {
-                System.out.println("\nInserisci scelta (inserisci 0 se vuoi smettere di inserire scelte): ");
+
+                correctInserction = true;
+
+                System.out.println("\nInserisci scelta (inserisci 0 per smettere di inserire): ");
                 userBet = scanner.nextInt();
 
-
-                /* ERROR MESSAGE */
-                // check if the number it's available in the list of bet
-                // if it's not available, tell him that isn't a correct number
-                if (userBet < 0 || userBet > 5) {
-                    System.out.println("Numero non valido. Inserire un numero tra 1 e 5");
-                // if the player inserts a number which is already insert
-                // tell him that the number is already insert
-                } else if (betChecker[userBet]) {
-                    System.out.println("Numero gia' inserito.");
-                // if the player inserts a number, which is bigger than the numbers of numbers that he plays,
-                // Tell him that the number he can't afford the bet type
-                } else if (userBet > playedNumbers)
-                    System.out.println(
-                            "La quantitá dei numeri che hai inserito é troppo piccola per porter scegliere questa opzione."
-                    );
+                // Check if the number is different from 0
+                if (userBet != 0) {
+                    // check if the number it's available in the list of bet
+                    // if it's not available, tell him that isn't a correct number
+                    if (userBet < 0 || userBet > 5) {
+                        System.out.println("Devi inserire un numero tra 1 e 5");
+                        correctInserction = false;
+                    }
+                    // if the player inserts a bet which is already insert
+                    // tell him that the number is already insert
+                    else if (betChecker[userBet - 1]) {
+                        System.out.println("Numero gia inserito.");
+                        correctInserction = false;
+                    }
+                    // if the player inserts a number, which is bigger than the numbers of numbers that he plays,
+                    // Tell him that the number he can't afford the bet type
+                    else if (userBet > playedNumbers) {
+                        System.out.println(
+                                "La quantita' dei numeri che hai inserito e' troppo piccola per porter scegliere questa opzione."
+                        );
+                        correctInserction = false;
+                    }
+                    // if the number is ok
+                    else {
+                        betChecker[userBet - 1] = true; // set the variable of the number to true,
+                        // so it means that is already insert
+                        betTypes[i] = userBet; // put the number in the right place
+                    }
+                }
                 /* END ERROR MESSAGE */
-            } while ((userBet  > playedNumbers) || (userBet < 0 || userBet > 5));
-
-            // If the userBet is different from 0
-            if (userBet != 0) {
-                betTypes[userBet - 1] = userBet; // Insert the number in the correct place
-                betChecker[userBet] = true; // set the checker for the insert number true
-            }
+                else
+                    continueToInsert = false;
+            } while (continueToInsert);
         }
 
         return betTypes;
@@ -243,7 +260,7 @@ public class aNicola {
 
             printMenu(menuOption);
 
-            System.out.println("Inserisci la tua scelta: ");
+            System.out.print("\nInserisci la tua scelta: ");
             numberOfWheels = scanner.nextInt();
 
             // If the user types a wrong choice, tell him that it's wrong
