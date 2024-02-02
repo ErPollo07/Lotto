@@ -1,4 +1,3 @@
-import javax.lang.model.util.SimpleAnnotationValueVisitor6;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -135,9 +134,9 @@ public class Nicola {
         numberOfWheels = scanner.nextInt();
 
         // If the user types a wrong choice, tell him that it's wrong
-        if (numberOfWheels != 1 && numberOfWheels != 10)
+        if (numberOfWheels != 1 && numberOfWheels != 2)
             System.out.println("Devi scegire 1 ruota o 10");
-        } while (numberOfWheels != 1 && numberOfWheels != 10);
+        } while (numberOfWheels != 1 && numberOfWheels != 2);
 
         return numberOfWheels;
     }
@@ -156,8 +155,6 @@ public class Nicola {
             if (specificWheel < 1 || specificWheel > 10)
                 System.out.println("Devi scegire 1 ruota o 10");
         } while (specificWheel < 1 || specificWheel > 10);
-
-
 
         return specificWheel;
     }
@@ -234,6 +231,7 @@ public class Nicola {
     private static int[] takePlayerBetTypes(int playedNumbers, String[] menuOptions) {
         Scanner scanner = new Scanner(System.in);
         int[] betTypes = new int[5];
+        boolean[] betChecker = new boolean[6];
         int userBet = 1;
 
 
@@ -245,19 +243,30 @@ public class Nicola {
                 System.out.println("\nInserisci scelta (si puó inserire piú scelte inserendo uno spazio fra le scelte o premedo invio): ");
                 userBet = scanner.nextInt();
 
+
+                /* ERROR MESSAGE */
+                // check if the number it's available in the list of bet
+                // if it's not available, tell him that isn't a correct number
+                if (userBet < 0 || userBet > 5) {
+                    System.out.println("Numero non valido. Inserire un numero tra 1 e 5");
+                // if the player inserts a number which is already insert
+                // tell him that the number is already insert
+                } else if (betChecker[userBet]) {
+                    System.out.println("Numero gia' inserito.");
                 // if the player inserts a number, which is bigger than the numbers of numbers that he plays,
                 // Tell him that the number he can't afford the bet type
-                if (userBet > playedNumbers)
-                    System.out.println("La quantitá dei numeri che hai inserito é troppo piccola per porter scegliere questa opzione.");
-                // else if the player inserts a correct number check if it's available in the list of bet
-                // if it's not available, tell him that isn't a correct number
-                else if (userBet < 0 || userBet > 5)
-                    System.out.println("Numero non valido");
+                } else if (userBet > playedNumbers)
+                    System.out.println(
+                            "La quantitá dei numeri che hai inserito é troppo piccola per porter scegliere questa opzione."
+                    );
+                /* END ERROR MESSAGE */
             } while ((userBet  > playedNumbers) || (userBet < 0 || userBet > 5));
 
             // If the userBet is different from 0
-            if (userBet != 0)
+            if (userBet != 0) {
                 betTypes[userBet - 1] = userBet; // Insert the number in the correct place
+                betChecker[userBet] = true; // set the checker for the insert number true
+            }
         }
 
         return betTypes;
