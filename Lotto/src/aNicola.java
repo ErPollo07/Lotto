@@ -1,9 +1,11 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class Nicola {
+public class aNicola {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+
+
 
         String[] specificWheelsMenu = {
                 "Su quale ruota vuoi puntare?",
@@ -44,6 +46,9 @@ public class Nicola {
         double amount; // How much money the player has bet
         double price = 0; // How much money the player wins
 
+        clrScr();
+        printLottoWord();
+
         // Ask the player to insert the amount of money he wants to bet
         amount = takeAmount();
 
@@ -64,8 +69,6 @@ public class Nicola {
             wheels[whatWheel] = extractedWheel();
         }
 
-        // clrSrc
-
         // take the player numbers
         playerNumbers = takePlayerNumbers();
 
@@ -85,7 +88,6 @@ public class Nicola {
                 printWheel(wheels[i]);
                 price += calculationWinningPrice(playerNumbers, wheels[i], playerBetTypes, amount, numberOfWheels, counterOfPlayedNumbers);
             }
-
         }
         else {
             System.out.println("Ecco la ruota che hai scelto: \n");
@@ -123,36 +125,47 @@ public class Nicola {
     private static int[] takePlayerNumbers() {
         Scanner scanner = new Scanner(System.in);
         int[] numbers = new int[10];
-        boolean[] n = new boolean[90];
+        boolean[] numbersChecker = new boolean[90];
+        boolean correctInserction = true, continueToInsert = true;
 
         int number;
 
-        System.out.println("Inserisci i numeri su cui vuoi scommettere.\nSe non vuoi inserire altri numeri inserisci 0.");
+        clrScr();
+        printLottoWord();
 
-        for (int i = 0; i < numbers.length; i++) {
-            // if the insert number is grader then 90, the program makes you enter the number again.
+        System.out.println("Inserisci i numeri su cui si vuole scommettere.\nSe non vuoi inserire altri numeri inserisci 0.");
+
+        for (int i = 0; i < numbers.length && continueToInsert; i++) {
+
             do {
-                System.out.print("\nInserisci un numero: ");
+                correctInserction = true;
+
+                // Ask the player to insert a number
+                System.out.print("\nInserisci un numero (inserire 0 per smettere di inserire): ");
                 number = scanner.nextInt();
 
-                if (number > 90)
-                    System.out.println("Devi inserire un numero tra 0 e 90");
-            } while (number > 90);
-
-            if (number >= 1) {
-                // if in the array of boolean there is a true, it's indicating that there is already a number
-                while (n[number - 1]) {
-                    // Ask to reinsert the number
-                    System.out.println("Numero gia inserito. Iserisci un altro numero: ");
-                    number = scanner.nextInt();
+                // Check if the number is different from 0
+                if (number != 0) {
+                    // Check if the number is in the correct interval
+                    if (number < 0 || number > 90) {
+                        System.out.println("Devi inserire un numero tra 0 e 90");
+                        correctInserction = false;
+                    }
+                    // check if the number is already insert
+                    else if (numbersChecker[number - 1]) {
+                        System.out.println("Numero gia inserito.");
+                        correctInserction = false;
+                    }
+                    // if the number is ok
+                    else {
+                        numbersChecker[number - 1] = true; // set the variable of the number to true,
+                        // so it means that is already insert
+                        numbers[i] = number; // put the number in the right place
+                    }
                 }
-
-                // Set the correct pos in the array to true to indicate that there is the number
-                n[number - 1] = true;
-
-                numbers[i] = number;
-            }
-            else break; // If the player writes 0, the cycle stops
+                else
+                    continueToInsert = false;
+            } while(!correctInserction);
         }
 
         return numbers;
@@ -209,7 +222,7 @@ public class Nicola {
 
     public static int[] extractedWheel() {
         int[] numbers = new int[5];
-        int minValue = 1, maxValue = 6;
+        int minValue = 1, maxValue = 90;
 
         for (int i = 0; i < numbers.length; i++) {
             numbers[i] = randomValue(minValue, maxValue); // Assign random value to numbers[i]
@@ -225,14 +238,19 @@ public class Nicola {
         int numberOfWheels;
 
         do {
-        printMenu(menuOption); // print the menu
+            clrScr();
+            printLottoWord();
 
-        System.out.println("Inserisci la tua scelta: ");
-        numberOfWheels = scanner.nextInt();
+            printMenu(menuOption);
 
-        // If the user types a wrong choice, tell him that it's wrong
-        if (numberOfWheels != 1 && numberOfWheels != 2)
-            System.out.println("Devi scegire 1 ruota o 10");
+            System.out.println("Inserisci la tua scelta: ");
+            numberOfWheels = scanner.nextInt();
+
+            // If the user types a wrong choice, tell him that it's wrong
+            if (numberOfWheels != 1 && numberOfWheels != 2) {
+                System.out.println("Puoi scegliere solo 1 o 2");
+                wait(1500);
+            }
         } while (numberOfWheels != 1 && numberOfWheels != 2);
 
         return numberOfWheels;
@@ -243,14 +261,19 @@ public class Nicola {
         int specificWheel;
 
         do {
+            clrScr();
+            printLottoWord();
+
             printMenu(menuOption); // print the menu
 
             System.out.println("Inserisci la tua scelta: ");
             specificWheel = scanner.nextInt();
 
             // If the user types a wrong choice, tell him that it's wrong
-            if (specificWheel < 1 || specificWheel > 10)
+            if (specificWheel < 1 || specificWheel > 10) {
                 System.out.println("Devi scegire 1 ruota o 10");
+                wait(1500);
+            }
         } while (specificWheel < 1 || specificWheel > 10);
 
         return specificWheel;
@@ -371,8 +394,6 @@ public class Nicola {
     */
 
     private static void printMenu(String[] option) {
-        clrScr();
-
         System.out.println("=============");
         System.out.println(option[0]);
         System.out.println("=============");
@@ -380,6 +401,25 @@ public class Nicola {
         for (int i = 1; i < option.length; i++) {
             System.out.println(option[i]);
         }
+    }
+
+    private static void printLottoWord() {
+        System.out.println(
+                "          ..:---::.         .:----:..         .:----:.         ..:----:.         .::---:..          \n" +
+                "        :-=+++++++=-:.   .:=++++++++=-.    .-=++++++++=-.    :-=++++++++=:.   .:==+++++++=-:        \n" +
+                "      .=++-:.   .:-=+=:.:=+=-..   .:=++-..-++=:..  ..:=+=-..=++=:.   .:-=+=: :=+=-:.   .:-++=.      \n" +
+                "     :++-. =*=     .-++=++-. :-::--. .=+==+=:.-++++++-.:=+=++=..=++++++:.-++=++-.         .=++:     \n" +
+                "    .=+-.  +**       -+++: .===+==+*=..=++=.  -++**++-  .+++=. .=+***++:  -+++:   .-=+=:.  .=+=.    \n" +
+                "    :++.   +**       .++= .+=++=-+*-*+ :++=     -**-     =++:     =**.    .+++.   +*****=   :++:    \n" +
+                "    -++.   +**        ++= .*-*=..-++== :++=     -**-     =++:     =**.     =++    ******=   .++-    \n" +
+                "    :++-   +**:::.   :+++..+*==+-=*-+. -++=.    -**-    .=++-     =**.    :+++:   -****+:   -++:    \n" +
+                "     =++:  +******  :=+++=..-++++===. -++++=.   :**:   .=++++:    =**.   .=+++=.           :++-     \n" +
+                "     .-++-..:::::..-++=:=+=-..::.. .:=++-:=+=:. .--. .:=+=:-++-:. .-: ..-=+=:=+=-..     .:-++-.     \n" +
+                "       :=+++=====+++=:. .:=++======+++-.  .-+++======++=-.  :=+++======++=:. .:=++======+++=:       \n" +
+                "         .:--====-:..     .:--====--:.      .:--====--:.      .:--====--..     .:--====--:.         \n"
+        );
+
+        System.out.println("\n\n");
     }
 
     private static int randomValue(int minValue, int maxValue)
