@@ -55,6 +55,7 @@ public class Nicola {
         if (numberOfWheels <= 1)
             whatWheel = takeSpecificWheel(specificWheelsMenu);
 
+        // If the player chose to play on all the wheel, the whatWheel variable is 0.
         // Generate the wheel numbers
         if (whatWheel == 0) {
             for (int i = 0; i < numberOfWheels; i++)
@@ -63,6 +64,7 @@ public class Nicola {
         else  {
             wheels[whatWheel] = extractedWheel();
         }
+
         // clrSrc
 
         // take the player numbers
@@ -91,73 +93,12 @@ public class Nicola {
     }
 
 
-    private static double calculationWinningPrice(int[] playerNumbers, int[] wheel, int[] playerBetTypes,
-                                                  double amount, int numberOfWheels, int counterOfPlayedNumbers) {
-        int betFromWheel = 0;
-        double price = 0;
 
-        betFromWheel = returnBetFromWheel(playerNumbers, wheel);
 
-        // For every type of bet that the player bet on the cycle continue
-        for (int i = 1; i < playerBetTypes.length; i++) {
-            // If the player bet in a specific bet type, so the number in the array is different form 0
-            if (betFromWheel == i && playerBetTypes[i - 1] != 0) {
-                price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, playerBetTypes[i - 1]);
-            }
-        }
-
-        return price;
-    }
-
-    private static int returnBetFromWheel(int[] playerNumbers, int[] wheelNumbers) {
-        int betTypeOfWheel = 0;
-
-        // For every number in playerNumbers check if in the array of the wheel
-        // there is another that is equal.
-        for (int playerNumber : playerNumbers) {
-            for (int wheelNumber : wheelNumbers) {
-                if (playerNumber == wheelNumber) betTypeOfWheel++; // update the bet counter
-            }
-        }
-
-        return betTypeOfWheel;
-    }
-
-    private static int takeNumberOfWheels(String[] menuOption) {
-        Scanner scanner = new Scanner(System.in);
-        int numberOfWheels;
-
-        do {
-        printMenu(menuOption); // print the menu
-
-        System.out.println("Inserisci la tua scelta: ");
-        numberOfWheels = scanner.nextInt();
-
-        // If the user types a wrong choice, tell him that it's wrong
-        if (numberOfWheels != 1 && numberOfWheels != 2)
-            System.out.println("Devi scegire 1 ruota o 10");
-        } while (numberOfWheels != 1 && numberOfWheels != 2);
-
-        return numberOfWheels;
-    }
-
-    private static int takeSpecificWheel(String[] menuOption) {
-        Scanner scanner = new Scanner(System.in);
-        int specificWheel;
-
-        do {
-            printMenu(menuOption); // print the menu
-
-            System.out.println("Inserisci la tua scelta: ");
-            specificWheel = scanner.nextInt();
-
-            // If the user types a wrong choice, tell him that it's wrong
-            if (specificWheel < 1 || specificWheel > 10)
-                System.out.println("Devi scegire 1 ruota o 10");
-        } while (specificWheel < 1 || specificWheel > 10);
-
-        return specificWheel;
-    }
+    /* --------------
+     * PLAYER METHODS
+     * --------------
+     */
 
     private static int[] takePlayerNumbers() {
         Scanner scanner = new Scanner(System.in);
@@ -197,37 +138,6 @@ public class Nicola {
         return numbers;
     }
 
-    public static int[] extractedWheel() {
-        int[] numbers = new int[5];
-        int minValue = 1, maxValue = 20;
-
-        for (int i = 0; i < numbers.length; i++) {
-            numbers[i] = randomValue(minValue, maxValue); // Assign random value to numbers[i]
-
-            if (i > 0) valueChecker(numbers, i, minValue, maxValue); // check if the value isn't repeating
-        }
-
-        return numbers; // return array
-    }
-
-    // Check if the value is available
-    private static void valueChecker(int[] array, int i, int minValue, int maxValue) {
-        for (int k = 0; k < i; k++) {
-            // If the value is already in the array, reassign it and recheck all array
-            if (array[i] == array[k]) {
-                array[i] = randomValue(minValue, maxValue); // Assign another random value to array[i]
-                k = -1; // Restart the check
-            }
-        }
-    }
-
-    private static int randomValue(int minValue, int maxValue)
-    {
-        Random random = new Random();
-
-        return  random.nextInt(minValue,maxValue+1);
-    }
-
     private static int[] takePlayerBetTypes(int playedNumbers, String[] menuOptions) {
         Scanner scanner = new Scanner(System.in);
         int[] betTypes = new int[5];
@@ -240,7 +150,7 @@ public class Nicola {
             printMenu(menuOptions);
 
             do {
-                System.out.println("\nInserisci scelta (si puó inserire piú scelte inserendo uno spazio fra le scelte o premedo invio): ");
+                System.out.println("\nInserisci scelta (inserisci 0 se vuoi smettere di inserire scelte): ");
                 userBet = scanner.nextInt();
 
 
@@ -270,6 +180,125 @@ public class Nicola {
         }
 
         return betTypes;
+    }
+
+    /* -------------
+     * WHEEL METHODS
+     * -------------
+     */
+
+    public static int[] extractedWheel() {
+        int[] numbers = new int[5];
+        int minValue = 1, maxValue = 6;
+
+        for (int i = 0; i < numbers.length; i++) {
+            numbers[i] = randomValue(minValue, maxValue); // Assign random value to numbers[i]
+
+            if (i > 0) valueChecker(numbers, i, minValue, maxValue); // check if the value isn't repeating
+        }
+
+        return numbers; // return array
+    }
+
+    private static int takeNumberOfWheels(String[] menuOption) {
+        Scanner scanner = new Scanner(System.in);
+        int numberOfWheels;
+
+        do {
+        printMenu(menuOption); // print the menu
+
+        System.out.println("Inserisci la tua scelta: ");
+        numberOfWheels = scanner.nextInt();
+
+        // If the user types a wrong choice, tell him that it's wrong
+        if (numberOfWheels != 1 && numberOfWheels != 2)
+            System.out.println("Devi scegire 1 ruota o 10");
+        } while (numberOfWheels != 1 && numberOfWheels != 2);
+
+        return numberOfWheels;
+    }
+
+    private static int takeSpecificWheel(String[] menuOption) {
+        Scanner scanner = new Scanner(System.in);
+        int specificWheel;
+
+        do {
+            printMenu(menuOption); // print the menu
+
+            System.out.println("Inserisci la tua scelta: ");
+            specificWheel = scanner.nextInt();
+
+            // If the user types a wrong choice, tell him that it's wrong
+            if (specificWheel < 1 || specificWheel > 10)
+                System.out.println("Devi scegire 1 ruota o 10");
+        } while (specificWheel < 1 || specificWheel > 10);
+
+        return specificWheel;
+    }
+
+    // Check if the value is available
+    private static void valueChecker(int[] array, int i, int minValue, int maxValue) {
+        for (int k = 0; k < i; k++) {
+            // If the value is already in the array, reassign it and recheck all array
+            if (array[i] == array[k]) {
+                array[i] = randomValue(minValue, maxValue); // Assign another random value to array[i]
+                k = -1; // Restart the check
+            }
+        }
+    }
+
+    /* ---------------
+    * WINNING METHODS
+    * ---------------
+    */
+
+    private static double calculationWinningPrice(int[] playerNumbers, int[] wheel, int[] playerBetTypes,
+                                                  double amount, int numberOfWheels, int counterOfPlayedNumbers) {
+        int betFromWheel;
+        int howManyBet;
+        double price = 0;
+
+        betFromWheel = returnBetFromWheel(playerNumbers, wheel);
+
+        // For every type of bet that the player bet on the cycle continue
+        for (int i = 1; i < playerBetTypes.length; i++) {
+            // Check if the betFromWheel is greater than i and if the player bet on i
+            if (betFromWheel >= i && playerBetTypes[i - 1] != 0) {
+                // only if the betFromWheel is equal to i add to the price the amount of cash that the player wins.
+                if (betFromWheel == i)
+                    price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, playerBetTypes[i - 1]);
+
+
+                // if the betFromWheel is greater then 1
+                if (betFromWheel > 1) {
+                    // Cycle from betFromWheel to 1
+                    for (int j = betFromWheel; j > 1; j--) {
+                        if (playerBetTypes[j - 1] != 0) {
+                            // Calculate all the possibility to do a bet minor then the effective bet 
+                            howManyBet = retriveWinAmount(j, betFromWheel);
+                            price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, j) * howManyBet;
+                        }
+                    }
+                }
+            }
+        }
+
+        return price;
+    }
+
+    private static int returnBetFromWheel(int[] playerNumbers, int[] wheelNumbers) {
+        int betTypeOfWheel = 0;
+
+        // For every number in playerNumbers check if in the array of the wheel there is another number that is equal to it.
+        // If there is then update the bet counter
+        for (int playerNumber : playerNumbers) {
+            for (int wheelNumber : wheelNumbers) {
+                if (playerNumber == wheelNumber)
+                    betTypeOfWheel++; // update the bet counter
+            }
+        }
+
+        return betTypeOfWheel;
     }
 
     public static double winningPrize(double amount, int numberOfWheels, int counterOfPlayedNumbers, int betType) {
@@ -314,9 +343,12 @@ public class Nicola {
         return input;
     }
 
-    private static void printMenu(String[] option) {
-        Scanner scanner = new Scanner(System.in);
+    /* --------------
+    * SERVICE METHODS
+    * ---------------
+    */
 
+    private static void printMenu(String[] option) {
         clrScr();
 
         System.out.println("=============");
@@ -326,6 +358,13 @@ public class Nicola {
         for (int i = 1; i < option.length; i++) {
             System.out.println(option[i]);
         }
+    }
+
+    private static int randomValue(int minValue, int maxValue)
+    {
+        Random random = new Random();
+
+        return  random.nextInt(minValue,maxValue+1);
     }
 
     private static void clrScr() {
