@@ -5,8 +5,6 @@ public class aNicola {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-
-
         String[] specificWheelsMenu = {
                 "Su quale ruota vuoi puntare?",
                 "[1] - BARI",
@@ -66,7 +64,7 @@ public class aNicola {
                 wheels[i] = extractedWheel();
         }
         else  {
-            wheels[whatWheel] = extractedWheel();
+            wheels[whatWheel - 1] = extractedWheel();
         }
 
         // take the player numbers
@@ -83,23 +81,24 @@ public class aNicola {
         playerBetTypes = takePlayerBetTypes(counterOfPlayedNumbers, betTypeMenu);
 
         if (whatWheel == 0) {
+            System.out.println("Ecco le ruote: \n");
             for (int i = 0; i < numberOfWheels; i++) {
-                System.out.println("Ecco le ruote: \n");
                 printWheel(wheels[i]);
+                System.out.println("\n");
                 price += calculationWinningPrice(playerNumbers, wheels[i], playerBetTypes, amount, numberOfWheels, counterOfPlayedNumbers);
             }
         }
         else {
-            System.out.println("Ecco la ruota che hai scelto: \n");
-            printWheel(wheels[whatWheel]);
-            price += calculationWinningPrice(playerNumbers, wheels[whatWheel], playerBetTypes, amount, numberOfWheels, counterOfPlayedNumbers);
+            System.out.println("\n\nEcco la ruota che hai scelto: ");
+            printWheel(wheels[whatWheel - 1]);
+            price += calculationWinningPrice(playerNumbers, wheels[whatWheel - 1], playerBetTypes, amount, numberOfWheels, counterOfPlayedNumbers);
         }
 
-        System.out.println("Ecco i tuoi numeri: \n");
+        System.out.println("\n\nEcco i tuoi numeri: ");
         printWheel(playerNumbers);
 
 
-        System.out.println("Hai vinto: " + price + " euro");
+        System.out.println("\n\nHai vinto: " + price + " euro");
     }
 
     /* --------------
@@ -126,7 +125,7 @@ public class aNicola {
         Scanner scanner = new Scanner(System.in);
         int[] numbers = new int[10];
         boolean[] numbersChecker = new boolean[90];
-        boolean correctInserction = true, continueToInsert = true;
+        boolean correctInserction, continueToInsert = true;
 
         int number;
 
@@ -136,7 +135,6 @@ public class aNicola {
         System.out.println("Inserisci i numeri su cui si vuole scommettere.\nSe non vuoi inserire altri numeri inserire 0.");
 
         for (int i = 0; i < numbers.length && continueToInsert; i++) {
-
             do {
                 correctInserction = true;
 
@@ -180,15 +178,13 @@ public class aNicola {
         int userBet;
         boolean continueToInsert = true, correctInserction;
 
+        clrScr();
+        printLottoWord();
+
+        printMenu(menuOptions);
+
         for (int i = 0; i < betTypes.length && continueToInsert; i++) {
-
-            clrScr();
-            printLottoWord();
-
-            printMenu(menuOptions);
-
             do {
-
                 correctInserction = true;
 
                 System.out.println("\nInserisci scelta (inserisci 0 per smettere di inserire): ");
@@ -226,7 +222,7 @@ public class aNicola {
                 /* END ERROR MESSAGE */
                 else
                     continueToInsert = false;
-            } while (continueToInsert);
+            } while (!correctInserction);
         }
 
         return betTypes;
@@ -252,23 +248,32 @@ public class aNicola {
 
     private static int takeNumberOfWheels(String[] menuOption) {
         Scanner scanner = new Scanner(System.in);
+        int choice;
         int numberOfWheels;
+        boolean correctInserction;
+
+        clrScr();
+        printLottoWord();
+
+        printMenu(menuOption);
 
         do {
-            clrScr();
-            printLottoWord();
-
-            printMenu(menuOption);
+            correctInserction = true;
 
             System.out.print("\nInserisci la tua scelta: ");
-            numberOfWheels = scanner.nextInt();
+            choice = scanner.nextInt();
 
             // If the user types a wrong choice, tell him that it's wrong
-            if (numberOfWheels != 1 && numberOfWheels != 2) {
+            if (choice != 1 && choice != 2) {
                 System.out.println("Puoi scegliere solo 1 o 2");
-                wait(1500);
+                correctInserction = false;
             }
-        } while (numberOfWheels != 1 && numberOfWheels != 2);
+        } while (!correctInserction);
+
+        if (choice == 2)
+            numberOfWheels = 10;
+        else
+            numberOfWheels = choice;
 
         return numberOfWheels;
     }
@@ -276,29 +281,35 @@ public class aNicola {
     private static int takeSpecificWheel(String[] menuOption) {
         Scanner scanner = new Scanner(System.in);
         int specificWheel;
+        boolean correctInserction;
 
         do {
+            correctInserction = true;
+
             clrScr();
             printLottoWord();
 
             printMenu(menuOption); // print the menu
 
-            System.out.println("Inserisci la tua scelta: ");
+            System.out.println("\nInserisci la tua scelta: ");
             specificWheel = scanner.nextInt();
 
             // If the user types a wrong choice, tell him that it's wrong
             if (specificWheel < 1 || specificWheel > 10) {
                 System.out.println("Devi scegire 1 ruota o 10");
-                wait(1500);
+                correctInserction = false;
             }
-        } while (specificWheel < 1 || specificWheel > 10);
+        } while (!correctInserction);
 
         return specificWheel;
     }
 
     private static void printWheel(int[] array) {
-        for (int i:array)
+        for (int i:array) {
+            if (i == 0)
+                break;
             System.out.print(i + " ");
+        }
     }
 
     // Check if the value is available
@@ -334,7 +345,7 @@ public class aNicola {
                     price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, playerBetTypes[i - 1]);
 
                 // Cycle from betFromWheel to 1
-                for (int j = betFromWheel; j >= 1; j--) {
+                for (int j = betFromWheel; j > 1; j--) {
                     if (playerBetTypes[j - 1] != 0) {
                         // Calculate all the possibility to do a bet minor then the effective bet
                         howManyBet = retriveWinAmount(j, betFromWheel);
