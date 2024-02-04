@@ -216,7 +216,7 @@ public class aNicola {
                     else {
                         betChecker[userBet - 1] = true; // set the variable of the number to true,
                         // so it means that is already insert
-                        betTypes[i] = userBet; // put the number in the right place
+                        betTypes[userBet - 1] = userBet; // put the number in the right place
                     }
                 }
                 /* END ERROR MESSAGE */
@@ -233,18 +233,6 @@ public class aNicola {
      * -------------
      */
 
-    public static int[] extractedWheel() {
-        int[] numbers = new int[5];
-        int minValue = 1, maxValue = 90;
-
-        for (int i = 0; i < numbers.length; i++) {
-            numbers[i] = randomValue(minValue, maxValue); // Assign random value to numbers[i]
-
-            if (i > 0) valueChecker(numbers, i, minValue, maxValue); // check if the value isn't repeating
-        }
-
-        return numbers; // return array
-    }
 
     private static int takeNumberOfWheels(String[] menuOption) {
         Scanner scanner = new Scanner(System.in);
@@ -304,6 +292,18 @@ public class aNicola {
         return specificWheel;
     }
 
+    public static int[] extractedWheel() {
+        int[] numbers = new int[5];
+        int minValue = 1, maxValue = 7;
+
+        for (int i = 0; i < numbers.length; i++) {
+            numbers[i] = randomValue(minValue, maxValue); // Assign random value to numbers[i]
+
+            if (i > 0) valueChecker(numbers, i, minValue, maxValue); // check if the value isn't repeating
+        }
+
+        return numbers; // return array
+    }
     private static void printWheel(int[] array) {
         for (int i:array) {
             if (i == 0)
@@ -336,26 +336,20 @@ public class aNicola {
 
         betFromWheel = returnBetFromWheel(playerNumbers, wheel);
 
-        // For every type of bet that the player bet on the cycle continue
-        for (int i = 1; i < playerBetTypes.length; i++) {
-            // Check if the betFromWheel is greater than i and if the player bet on i
-            if (betFromWheel >= i && playerBetTypes[i - 1] != 0) {
-                // only if the betFromWheel is equal to i add to the price the amount of cash that the player wins.
-                if (betFromWheel == i)
-                    price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, playerBetTypes[i - 1]);
+        if (betFromWheel == 0)
+            return price;
 
-                // Cycle from betFromWheel to 1
-                for (int j = betFromWheel; j > 1; j--) {
-                    if (playerBetTypes[j - 1] != 0) {
-                        // Calculate all the possibility to do a bet minor then the effective bet
-                        howManyBet = retriveWinAmount(j, betFromWheel);
-                        price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, j) * howManyBet;
-                    }
-                }
+        for (int i = betFromWheel; i >= 1; i--) {
 
+            // I have guessed 4 numbers, but I have bet on ambo.
+            // So because guessed 4 numbers, I have done 6 ambo.
+            // This for return the winning of the 6 ambo.
+            if (playerBetTypes[i - 1] != 0) {
+                // Calculate all the possibility to do a bet minor then the effective bet
+                howManyBet = retriveWinAmount(i, betFromWheel);
+                price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, i) * howManyBet;
             }
         }
-
         return price;
     }
 
@@ -405,15 +399,22 @@ public class aNicola {
     betType = sing, ambo, terna, quaterna, cinquina
     */
     private static int retriveWinAmount(int betType, int userWins) {
-        return (factorial(userWins)) / (factorial(betType) * factorial(userWins - betType));
+        return factorial(userWins) / (factorial(betType) * factorial(userWins - betType));
     }
 
     /* Give the factorial of a number */
     private static int factorial(int input) {
-        for (int inputMultiplier = input; inputMultiplier > 0; inputMultiplier--)
-            input *= inputMultiplier;
+        if (input <= 1) {
+            return 1;
+        }
 
-        return input;
+        int result = 1;
+
+        for (int inputMultiplier = 2; inputMultiplier <= input; inputMultiplier++) {
+            result *= inputMultiplier;
+        }
+
+        return result;
     }
 
     /* --------------
