@@ -6,6 +6,14 @@ public class aNicola {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        String[] introductionMenu = {
+                "Step del gioco",
+                "1) Inserimento dell'importo",
+                "2) Scegliere su quante ruote giocare",
+                "2.1) Se si sceglie di giocare su una ruota, scegliere quale",
+                "3) Inserire i propri numeri",
+                "4) Inserire su cosa si vuole scommettere"
+        };
 
         String[] numberOfWheelMenu = {
                 "Su quante ruote vuoi puntare?",
@@ -53,23 +61,31 @@ public class aNicola {
         double price = 0; // How much money the player wins
 
         int continueToPlay;
+        String _pause;
 
         clrScr();
         printLottoWord();
 
         do {
 
-            printIntroduction(introductionMenu)
+            printMenu(introductionMenu);
 
+            System.out.println("Premi invio per iniziare a giocare");
+            _pause = scanner.nextLine();
+
+            System.out.println("Step 1\n\tInserire l'importo\n");
             // Ask the player to insert the amount of money he wants to bet
             amount = takeAmount();
 
+            System.out.println("Step 2\n\tScegliere su quante ruote giocare\n");
             // Ask the player how many wheels he what to bet on
             numberOfWheels = takeNumberOfWheels(numberOfWheelMenu);
 
             // if the player wants to play on one wheel, then I make him choose which wheel
-            if (numberOfWheels <= 1)
+            if (numberOfWheels <= 1) {
+                System.out.println("Step 2.1\n\tScegliere su quale ruota giocare\n");
                 whatWheel = takeSpecificWheel(specificWheelsMenu);
+            }
 
             // If the player chose to play on all the wheel, the whatWheel variable is 0.
             // Generate the wheel numbers
@@ -81,6 +97,7 @@ public class aNicola {
                 wheels[whatWheel - 1] = extractedWheel();
             }
 
+            System.out.println("Step 3\n\tInserire i propri numeri\n");
             // take the player numbers
             playerNumbers = takePlayerNumbers();
 
@@ -91,6 +108,7 @@ public class aNicola {
             }
             /* END CALCULATION */
 
+            System.out.println("Step 4\n\tInserire su cosa si vuole scommettere\n");
             // Take the bets of the player
             playerBetTypes = takePlayerBetTypes(counterOfPlayedNumbers, betTypeMenu);
 
@@ -365,7 +383,7 @@ public class aNicola {
     private static void valueChecker(int[] array, int i, int minValue, int maxValue) {
         for (int k = 0; k < i; k++) {
             // If the value is already in the array, reassign it and recheck all array
-            if (array[i] == array[k]) { =
+            if (array[i] == array[k]) {
                 array[i] = randomValue(minValue, maxValue); // Assign another random value to array[i]
                 k = -1; // Restart the check
             }
