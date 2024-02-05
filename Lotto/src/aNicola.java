@@ -99,8 +99,12 @@ public class aNicola {
         System.out.println("\n\nEcco i tuoi numeri: ");
         printWheel(playerNumbers);
 
-
         System.out.println("\n\nHai vinto: " + price + " euro");
+
+        // Print all the probability 
+        for (int i = 0; i < counterOfPlayedNumbers; i++) {
+            System.out.println("Le tue probabilità di fare un " + i + " sono: " + winningProbability(counterOfPlayedNumbers));
+        }
     }
 
     /* --------------
@@ -127,7 +131,9 @@ public class aNicola {
         return amount;
     }
 
-    // This function return the array of numbers who player wants to bet
+    /*
+    This function return the array of numbers who player wants to bet
+    */
     private static int[] takePlayerNumbers() {
         Scanner scanner = new Scanner(System.in);
         int[] numbers = new int[10];
@@ -178,7 +184,11 @@ public class aNicola {
         return numbers;
     }
 
-    // This function return the array that contains all the player betTypes 
+    /**
+    This function return the array that contains all the player betTypes
+    @param playedNumbers counter of how much numbers the player played
+    @param menuOptions array for print the menu
+    */  
     private static int[] takePlayerBetTypes(int playedNumbers, String[] menuOptions) {
         Scanner scanner = new Scanner(System.in);
         int[] betTypes = new int[5];
@@ -244,7 +254,7 @@ public class aNicola {
 
     /**
     This function return if the player wants to play on 1 or 10 wheels
-    @param menOption array of string for the menu
+    @param menuOption array of string for the menu
     */
     private static int takeNumberOfWheels(String[] menuOption) {
         Scanner scanner = new Scanner(System.in);
@@ -307,6 +317,9 @@ public class aNicola {
         return specificWheel;
     }
 
+    /*
+    This function return the array of a wheel
+    */
     public static int[] extractedWheel() {
         int[] numbers = new int[5];
         int minValue = 1, maxValue = 7;
@@ -319,15 +332,14 @@ public class aNicola {
 
         return numbers; // return array
     }
-    private static void printWheel(int[] array) {
-        for (int i:array) {
-            if (i == 0)
-                break;
-            System.out.print(i + " ");
-        }
-    }
 
-    // Check if the value is available
+    /**
+    Check if the value is available
+    @param array[] array of number that need to check
+    @param i index of the for in extractedWheel method
+    @param minValue minimun value to pass in randomValue method
+    @param maxValue maximum value to pass in randomValue method
+    */ 
     private static void valueChecker(int[] array, int i, int minValue, int maxValue) {
         for (int k = 0; k < i; k++) {
             // If the value is already in the array, reassign it and recheck all array
@@ -338,11 +350,32 @@ public class aNicola {
         }
     }
 
+    /*
+    Print the array
+    */
+    private static void printWheel(int[] array) {
+        for (int i:array) {
+            if (i == 0)
+                break;
+            System.out.print(i + " ");
+        }
+    }
+
+
     /* ---------------
     * WINNING METHODS
     * ---------------
     */
 
+    /**
+    Calculation of the price that the player wins
+    @param playerNumbers player numbers
+    @param wheel number of the wheel
+    @param playerBetTypes The bets of the player
+    @param amount cash which the player bet
+    @param numberOfWheels how many wheels player bet on
+    @param counterOfPlayedNumbers how many numbers player bet
+    */
     private static double calculationWinningPrice(int[] playerNumbers, int[] wheel, int[] playerBetTypes,
                                                   double amount, int numberOfWheels, int counterOfPlayedNumbers) {
         int betFromWheel;
@@ -368,6 +401,11 @@ public class aNicola {
         return price;
     }
 
+    /**
+    Return how much number the user guess
+    @param playerNumbers[] array of the player numbers
+    @param wheelNumbers[] array of numbers of a wheels
+    */
     private static int returnBetFromWheel(int[] playerNumbers, int[] wheelNumbers) {
         int betTypeOfWheel = 0;
 
@@ -383,6 +421,9 @@ public class aNicola {
         return betTypeOfWheel;
     }
 
+    /**
+     
+    */
     public static double winningPrize(double amount, int numberOfWheels, int counterOfPlayedNumbers, int betType) {
 
         // 2d array for prizes if the player inserts 1 euro
