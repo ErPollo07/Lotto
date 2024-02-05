@@ -82,6 +82,7 @@ public class aNicola {
         // Take the bets of the player
         playerBetTypes = takePlayerBetTypes(counterOfPlayedNumbers, betTypeMenu);
 
+        // if the player choose to play on all the wheels whatWheel will be 0 so calculate the winning prize for all the wheel
         if (whatWheel == 0) {
             System.out.println("Ecco le ruote: \n");
             for (int i = 0; i < numberOfWheels; i++) {
@@ -90,6 +91,7 @@ public class aNicola {
                 price += calculationWinningPrice(playerNumbers, wheels[i], playerBetTypes, amount, numberOfWheels, counterOfPlayedNumbers);
             }
         }
+        // if the player choose to play on specific wheel the whatWheel number will be a number so calculate the prize for that specific wheel
         else {
             System.out.println("\n\nEcco la ruota che hai scelto: ");
             printWheel(wheels[whatWheel - 1]);
@@ -99,8 +101,12 @@ public class aNicola {
         System.out.println("\n\nEcco i tuoi numeri: ");
         printWheel(playerNumbers);
 
-
         System.out.println("\n\nHai vinto: " + price + " euro");
+
+        // Print all the probability 
+        for (int i = 0; i < counterOfPlayedNumbers; i++) {
+            System.out.println("Le tue probabilità di fare un " + i + " sono: " + winningProbability(counterOfPlayedNumbers));
+        }
     }
 
     /* --------------
@@ -108,6 +114,9 @@ public class aNicola {
      * --------------
      */
 
+    /*
+    This function return the amount which the player wants to bet
+    */
     private static double takeAmount() {
         Scanner scanner = new Scanner(System.in);
         double amount;
@@ -116,6 +125,7 @@ public class aNicola {
             System.out.println("Inserisci importo: ");
             amount = scanner.nextInt();
 
+            // if the player insert a number out of range, tell him that is a not vvalid number
             if (amount < 0 || amount > 200)
                 System.out.println("L'importo deve essere compreso tra 0 e 200.");
         } while(amount < 0 || amount > 200);
@@ -123,6 +133,9 @@ public class aNicola {
         return amount;
     }
 
+    /*
+    This function return the array of numbers who player wants to bet
+    */
     private static int[] takePlayerNumbers() {
         Scanner scanner = new Scanner(System.in);
         int[] numbers = new int[10];
@@ -157,7 +170,7 @@ public class aNicola {
                         System.out.println("Numero gia inserito.");
                         correctInserction = false;
                     }
-                    // if the number is ok
+                    // if the number is in the right interval and isn't already insert 
                     else {
                         numbersChecker[number - 1] = true; // set the variable of the number to true,
                         // so it means that is already insert
@@ -173,6 +186,11 @@ public class aNicola {
         return numbers;
     }
 
+    /**
+    This function return the array that contains all the player betTypes
+    @param playedNumbers counter of how much numbers the player played
+    @param menuOptions array for print the menu
+    */  
     private static int[] takePlayerBetTypes(int playedNumbers, String[] menuOptions) {
         Scanner scanner = new Scanner(System.in);
         int[] betTypes = new int[5];
@@ -214,7 +232,7 @@ public class aNicola {
                         );
                         correctInserction = false;
                     }
-                    // if the number is ok
+                    // if the number is in the correct interval, isn't already insert and is minor then the count of played numbers
                     else {
                         betChecker[userBet - 1] = true; // set the variable of the number to true,
                         // so it means that is already insert
@@ -236,6 +254,10 @@ public class aNicola {
      */
 
 
+    /**
+    This function return if the player wants to play on 1 or 10 wheels
+    @param menuOption array of string for the menu
+    */
     private static int takeNumberOfWheels(String[] menuOption) {
         Scanner scanner = new Scanner(System.in);
         int choice;
@@ -260,14 +282,17 @@ public class aNicola {
             }
         } while (!correctInserction);
 
+        // if the choice is 2
         if (choice == 2)
-            numberOfWheels = 10;
+            numberOfWheels = 10; // set number of wheel to ten
+        // if the player wnats to bet on 1 wheel the choice is 1, so set the nummberOfWheel equal to choice
         else
             numberOfWheels = choice;
 
         return numberOfWheels;
     }
 
+    // This function 
     private static int takeSpecificWheel(String[] menuOption) {
         Scanner scanner = new Scanner(System.in);
         int specificWheel;
@@ -294,6 +319,9 @@ public class aNicola {
         return specificWheel;
     }
 
+    /*
+    This function return the array of a wheel
+    */
     public static int[] extractedWheel() {
         int[] numbers = new int[5];
         int minValue = 1, maxValue = 7;
@@ -306,15 +334,14 @@ public class aNicola {
 
         return numbers; // return array
     }
-    private static void printWheel(int[] array) {
-        for (int i:array) {
-            if (i == 0)
-                break;
-            System.out.print(i + " ");
-        }
-    }
 
-    // Check if the value is available
+    /**
+    Check if the value is available
+    @param array[] array of number that need to check
+    @param i index of the for in extractedWheel method
+    @param minValue minimun value to pass in randomValue method
+    @param maxValue maximum value to pass in randomValue method
+    */ 
     private static void valueChecker(int[] array, int i, int minValue, int maxValue) {
         for (int k = 0; k < i; k++) {
             // If the value is already in the array, reassign it and recheck all array
@@ -325,11 +352,32 @@ public class aNicola {
         }
     }
 
+    /*
+    Print the array
+    */
+    private static void printWheel(int[] array) {
+        for (int i:array) {
+            if (i == 0)
+                break;
+            System.out.print(i + " ");
+        }
+    }
+
+
     /* ---------------
     * WINNING METHODS
     * ---------------
     */
 
+    /**
+    Calculation of the price that the player wins
+    @param playerNumbers player numbers
+    @param wheel number of the wheel
+    @param playerBetTypes The bets of the player
+    @param amount cash which the player bet
+    @param numberOfWheels how many wheels player bet on
+    @param counterOfPlayedNumbers how many numbers player bet
+    */
     private static double calculationWinningPrice(int[] playerNumbers, int[] wheel, int[] playerBetTypes,
                                                   double amount, int numberOfWheels, int counterOfPlayedNumbers) {
         int betFromWheel = returnBetFromWheel(playerNumbers, wheel);;
@@ -354,6 +402,11 @@ public class aNicola {
         return price;
     }
 
+    /**
+    Return how much number the user guess
+    @param playerNumbers[] array of the player numbers
+    @param wheelNumbers[] array of numbers of a wheels
+    */
     private static int returnBetFromWheel(int[] playerNumbers, int[] wheelNumbers) {
         int betTypeOfWheel = 0;
 
@@ -369,6 +422,9 @@ public class aNicola {
         return betTypeOfWheel;
     }
 
+    /**
+     
+    */
     public static double winningPrize(double amount, int numberOfWheels, int counterOfPlayedNumbers, int betType) {
 
         // 2d array for prizes if the player inserts 1 euro
@@ -416,6 +472,25 @@ public class aNicola {
         }
 
         return result;
+    }
+
+    // counterOfPlayedNummbers / 90 = prob. singolo
+    // counterOfPlayedNummbers / 90 * 89 = prob. ambo
+    // counterOfPlayedNummbers / 90 * 89 * 88 = prob. terna
+    // counterOfPlayedNummbers / 90 * 89 * 88 * 87 = prob. quaterna
+    // counterOfPlayedNummbers / 90 * 89 * 88 * 87 * 86 = prob. cinquina
+    private static double winningProbability(int playedNumbers) {
+        double denominatore = 90;
+        double probability;
+
+    
+        for (int i = 1; i < playedNumbers; i++) {
+            denominatore *= denominatore - 1;
+        }
+
+        probability = playednumbers / dnominatore;
+
+        return probability;
     }
 
     /* --------------
