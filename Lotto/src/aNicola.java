@@ -437,8 +437,18 @@ public class aNicola {
     // counterOfPlayedNummbers / 90 * 89 * 88 = prob. terna
     // counterOfPlayedNummbers / 90 * 89 * 88 * 87 = prob. quaterna
     // counterOfPlayedNummbers / 90 * 89 * 88 * 87 * 86 = prob. cinquina
-    private static double winningProbability() {
-        
+    private static double winningProbability(int playedNumbers) {
+        double denominatore = 90;
+        double probability;
+
+    
+        for (int i = 1; i < playedNumbers; i++) {
+            denominatore *= denominatore - 1;
+        }
+
+        probability = playednumbers / dnominatore;
+
+        return probability;
     }
 
     /* --------------
