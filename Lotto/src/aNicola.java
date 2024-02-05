@@ -336,13 +336,13 @@ public class aNicola {
         int specificWheel;
         boolean correctInserction;
 
+        clrScr();
+        printLottoWord();
+
+        printMenu(menuOption);
+
         do {
             correctInserction = true;
-
-            clrScr();
-            printLottoWord();
-
-            printMenu(menuOption); // print the menu
 
             System.out.println("\nInserisci la tua scelta: ");
             specificWheel = scanner.nextInt();
