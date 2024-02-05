@@ -67,6 +67,8 @@ public class aNicola {
             wheels[whatWheel - 1] = extractedWheel();
         }
 
+
+
         // take the player numbers
         playerNumbers = takePlayerNumbers();
 
@@ -330,26 +332,25 @@ public class aNicola {
 
     private static double calculationWinningPrice(int[] playerNumbers, int[] wheel, int[] playerBetTypes,
                                                   double amount, int numberOfWheels, int counterOfPlayedNumbers) {
-        int betFromWheel;
+        int betFromWheel = returnBetFromWheel(playerNumbers, wheel);;
         int howManyBet;
         double price = 0;
 
-        betFromWheel = returnBetFromWheel(playerNumbers, wheel);
-
+        //
         if (betFromWheel == 0)
             return price;
 
         for (int i = betFromWheel; i >= 1; i--) {
-
+            // Example to explain this if:
             // I have guessed 4 numbers, but I have bet on ambo.
             // So because guessed 4 numbers, I have done 6 ambo.
             // This for return the winning of the 6 ambo.
             if (playerBetTypes[i - 1] != 0) {
-                // Calculate all the possibility to do a bet minor then the effective bet
                 howManyBet = retriveWinAmount(i, betFromWheel);
                 price += winningPrize(amount, numberOfWheels, counterOfPlayedNumbers, i) * howManyBet;
             }
         }
+
         return price;
     }
 
