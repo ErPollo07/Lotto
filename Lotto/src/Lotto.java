@@ -1,7 +1,7 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class aNicola {
+public class Lotto {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -207,7 +207,7 @@ public class aNicola {
                         System.out.println("Numero gia inserito.");
                         correctInserction = false;
                     }
-                    // if the number is in the right interval and isn't already insert 
+                    // if the number is in the right interval and isn't already insert
                     else {
                         numbersChecker[number - 1] = true; // set the variable of the number to true,
                         // so it means that is already insert
@@ -227,7 +227,7 @@ public class aNicola {
     This method returns the array that contains all the player betTypes
     param = playedNumbers counter of how much numbers the player played
     param = menuOptions array for print the menu
-    */  
+    */
     private static int[] takePlayerBetTypes(int playedNumbers, String[] menuOptions) {
         Scanner scanner = new Scanner(System.in);
         int[] betTypes = new int[5];
@@ -322,14 +322,14 @@ public class aNicola {
         // if the choice is 2
         if (choice == 2)
             numberOfWheels = 10; // set the number of wheels to ten
-        // if the player wnats to bet on 1 wheel, the choice is 1, so set the nummberOfWheel equal to choice
+            // if the player wnats to bet on 1 wheel, the choice is 1, so set the nummberOfWheel equal to choice
         else
             numberOfWheels = choice;
 
         return numberOfWheels;
     }
 
-    // This function 
+    // This function
     private static int takeSpecificWheel(String[] menuOption) {
         Scanner scanner = new Scanner(System.in);
         int specificWheel;
@@ -378,7 +378,7 @@ public class aNicola {
     param = i index of the for in extractedWheel method
     param = minValue minimum value to pass in randomValue method
     param = maxValue maximum value to pass in randomValue method
-    */ 
+    */
     private static void valueChecker(int[] array, int i, int minValue, int maxValue) {
         for (int k = 0; k < i; k++) {
             // If the value is already in the array, reassign it and recheck all array
@@ -402,9 +402,9 @@ public class aNicola {
 
 
     /* ---------------
-    * WINNING METHODS
-    * ---------------
-    */
+     * WINNING METHODS
+     * ---------------
+     */
 
     /*
     Calculation of the price that the player wins
@@ -532,9 +532,9 @@ public class aNicola {
     }
 
     /* --------------
-    * SERVICE METHODS
-    * ---------------
-    */
+     * SERVICE METHODS
+     * ---------------
+     */
 
 
     private static void printMenu(String[] option) {
@@ -560,17 +560,17 @@ public class aNicola {
     private static void printLottoWord() {
         System.out.println(
                 "          ..:---::.         .:----:..         .:----:.         ..:----:.         .::---:..          \n" +
-                "        :-=+++++++=-:.   .:=++++++++=-.    .-=++++++++=-.    :-=++++++++=:.   .:==+++++++=-:        \n" +
-                "      .=++-:.   .:-=+=:.:=+=-..   .:=++-..-++=:..  ..:=+=-..=++=:.   .:-=+=: :=+=-:.   .:-++=.      \n" +
-                "     :++-. =*=     .-++=++-. :-::--. .=+==+=:.-++++++-.:=+=++=..=++++++:.-++=++-.         .=++:     \n" +
-                "    .=+-.  +**       -+++: .===+==+*=..=++=.  -++**++-  .+++=. .=+***++:  -+++:   .-=+=:.  .=+=.    \n" +
-                "    :++.   +**       .++= .+=++=-+*-*+ :++=     -**-     =++:     =**.    .+++.   +*****=   :++:    \n" +
-                "    -++.   +**        ++= .*-*=..-++== :++=     -**-     =++:     =**.     =++    ******=   .++-    \n" +
-                "    :++-   +**:::.   :+++..+*==+-=*-+. -++=.    -**-    .=++-     =**.    :+++:   -****+:   -++:    \n" +
-                "     =++:  +******  :=+++=..-++++===. -++++=.   :**:   .=++++:    =**.   .=+++=.           :++-     \n" +
-                "     .-++-..:::::..-++=:=+=-..::.. .:=++-:=+=:. .--. .:=+=:-++-:. .-: ..-=+=:=+=-..     .:-++-.     \n" +
-                "       :=+++=====+++=:. .:=++======+++-.  .-+++======++=-.  :=+++======++=:. .:=++======+++=:       \n" +
-                "         .:--====-:..     .:--====--:.      .:--====--:.      .:--====--..     .:--====--:.         \n"
+                        "        :-=+++++++=-:.   .:=++++++++=-.    .-=++++++++=-.    :-=++++++++=:.   .:==+++++++=-:        \n" +
+                        "      .=++-:.   .:-=+=:.:=+=-..   .:=++-..-++=:..  ..:=+=-..=++=:.   .:-=+=: :=+=-:.   .:-++=.      \n" +
+                        "     :++-. =*=     .-++=++-. :-::--. .=+==+=:.-++++++-.:=+=++=..=++++++:.-++=++-.         .=++:     \n" +
+                        "    .=+-.  +**       -+++: .===+==+*=..=++=.  -++**++-  .+++=. .=+***++:  -+++:   .-=+=:.  .=+=.    \n" +
+                        "    :++.   +**       .++= .+=++=-+*-*+ :++=     -**-     =++:     =**.    .+++.   +*****=   :++:    \n" +
+                        "    -++.   +**        ++= .*-*=..-++== :++=     -**-     =++:     =**.     =++    ******=   .++-    \n" +
+                        "    :++-   +**:::.   :+++..+*==+-=*-+. -++=.    -**-    .=++-     =**.    :+++:   -****+:   -++:    \n" +
+                        "     =++:  +******  :=+++=..-++++===. -++++=.   :**:   .=++++:    =**.   .=+++=.           :++-     \n" +
+                        "     .-++-..:::::..-++=:=+=-..::.. .:=++-:=+=:. .--. .:=+=:-++-:. .-: ..-=+=:=+=-..     .:-++-.     \n" +
+                        "       :=+++=====+++=:. .:=++======+++-.  .-+++======++=-.  :=+++======++=:. .:=++======+++=:       \n" +
+                        "         .:--====-:..     .:--====--:.      .:--====--:.      .:--====--..     .:--====--:.         \n"
         );
 
         System.out.println("\n\n");
