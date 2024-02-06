@@ -1,4 +1,3 @@
-import javax.swing.plaf.IconUIResource;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -362,7 +361,7 @@ public class aNicola {
     */
     public static int[] extractedWheel() {
         int[] numbers = new int[5];
-        int minValue = 1, maxValue = 7;
+        int minValue = 1, maxValue = 90;
 
         for (int i = 0; i < numbers.length; i++) {
             numbers[i] = randomValue(minValue, maxValue); // Assign random value to numbers[i]
