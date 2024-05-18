@@ -80,6 +80,8 @@ public class Lotto {
             // Ask the player how many wheels he what to bet on
             numberOfWheels = takeNumberOfWheels(numberOfWheelMenu);
 
+            whatWheel = 0;
+
             // if the player wants to play on one wheel, then I make him choose which wheel
             if (numberOfWheels <= 1) {
                 System.out.println("Step 2.1\n\tScegliere su quale ruota giocare\n");
